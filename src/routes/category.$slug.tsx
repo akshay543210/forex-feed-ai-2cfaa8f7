@@ -27,7 +27,7 @@ function CategoryPage() {
   const { category } = Route.useLoaderData();
   const [posts, setPosts] = useState<BlogCardData[]>([]);
   useEffect(() => {
-    const sel = "slug,title,excerpt,cover_image_url,reading_time_minutes,published_at,author:profiles(display_name),category:categories(name,slug,color)";
+    const sel = "slug,title,excerpt,cover_image_url,reading_time_minutes,published_at,author:profiles!blogs_author_id_fkey(display_name),category:categories(name,slug,color)";
     supabase.from("blogs").select(sel).eq("status", "published").eq("category_id", category.id)
       .order("published_at", { ascending: false }).limit(30)
       .then(({ data }) => setPosts((data as unknown as BlogCardData[]) ?? []));

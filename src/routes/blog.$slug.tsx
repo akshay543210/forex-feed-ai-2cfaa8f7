@@ -11,7 +11,7 @@ import { formatRelative } from "@/lib/format";
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
     const { data } = await supabase.from("blogs")
-      .select("*, author:profiles(display_name,avatar_url,bio,expertise), category:categories(name,slug,color)")
+      .select("*, author:profiles!blogs_author_id_fkey(display_name,avatar_url,bio,expertise), category:categories(name,slug,color)")
       .eq("slug", params.slug).eq("status", "published").maybeSingle();
     if (!data) throw notFound();
     return { blog: data };
@@ -42,7 +42,7 @@ function BlogPage() {
 
   useEffect(() => {
     if (!blog.category_id) return;
-    const sel = "slug,title,excerpt,cover_image_url,reading_time_minutes,published_at,author:profiles(display_name),category:categories(name,slug,color)";
+    const sel = "slug,title,excerpt,cover_image_url,reading_time_minutes,published_at,author:profiles!blogs_author_id_fkey(display_name),category:categories(name,slug,color)";
     supabase.from("blogs").select(sel).eq("status", "published").eq("category_id", blog.category_id).neq("id", blog.id)
       .order("published_at", { ascending: false }).limit(3)
       .then(({ data }) => setRelated((data as unknown as BlogCardData[]) ?? []));

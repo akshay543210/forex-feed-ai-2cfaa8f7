@@ -28,7 +28,7 @@ function HomePage() {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    const sel = "slug,title,excerpt,cover_image_url,reading_time_minutes,published_at,author:profiles(display_name),category:categories(name,slug,color)";
+    const sel = "slug,title,excerpt,cover_image_url,reading_time_minutes,published_at,author:profiles!blogs_author_id_fkey(display_name),category:categories(name,slug,color)";
     supabase.from("blogs").select(sel).eq("status", "published").eq("is_featured", true)
       .order("published_at", { ascending: false }).limit(3)
       .then(({ data }) => setFeatured((data as unknown as BlogCardData[]) ?? []));
