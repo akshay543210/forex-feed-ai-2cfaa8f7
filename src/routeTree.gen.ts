@@ -9,7 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as PromoCodesRouteImport } from './routes/promo-codes'
 import { Route as PayoutsRouteImport } from './routes/payouts'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -21,10 +23,22 @@ import { Route as PropFirmsSlugRouteImport } from './routes/prop-firms.$slug'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminBlogsRouteImport } from './routes/admin.blogs'
+import { Route as ApiAiGenerateBlogRouteImport } from './routes/api/ai/generate-blog'
+import { Route as ApiPublicCronAutoBlogRouteImport } from './routes/api/public/cron/auto-blog'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PromoCodesRoute = PromoCodesRouteImport.update({
@@ -82,6 +96,16 @@ const AdminBlogsRoute = AdminBlogsRouteImport.update({
   path: '/admin/blogs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAiGenerateBlogRoute = ApiAiGenerateBlogRouteImport.update({
+  id: '/api/ai/generate-blog',
+  path: '/api/ai/generate-blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicCronAutoBlogRoute = ApiPublicCronAutoBlogRouteImport.update({
+  id: '/api/public/cron/auto-blog',
+  path: '/api/public/cron/auto-blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -89,13 +113,17 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/payouts': typeof PayoutsRoute
   '/promo-codes': typeof PromoCodesRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/blogs': typeof AdminBlogsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/category/$slug': typeof CategorySlugRoute
   '/prop-firms/$slug': typeof PropFirmsSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/prop-firms/': typeof PropFirmsIndexRoute
+  '/api/ai/generate-blog': typeof ApiAiGenerateBlogRoute
+  '/api/public/cron/auto-blog': typeof ApiPublicCronAutoBlogRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -103,13 +131,17 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/payouts': typeof PayoutsRoute
   '/promo-codes': typeof PromoCodesRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/blogs': typeof AdminBlogsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/category/$slug': typeof CategorySlugRoute
   '/prop-firms/$slug': typeof PropFirmsSlugRoute
   '/admin': typeof AdminIndexRoute
   '/prop-firms': typeof PropFirmsIndexRoute
+  '/api/ai/generate-blog': typeof ApiAiGenerateBlogRoute
+  '/api/public/cron/auto-blog': typeof ApiPublicCronAutoBlogRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -118,13 +150,17 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/payouts': typeof PayoutsRoute
   '/promo-codes': typeof PromoCodesRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/blogs': typeof AdminBlogsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/category/$slug': typeof CategorySlugRoute
   '/prop-firms/$slug': typeof PropFirmsSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/prop-firms/': typeof PropFirmsIndexRoute
+  '/api/ai/generate-blog': typeof ApiAiGenerateBlogRoute
+  '/api/public/cron/auto-blog': typeof ApiPublicCronAutoBlogRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -134,13 +170,17 @@ export interface FileRouteTypes {
     | '/auth'
     | '/payouts'
     | '/promo-codes'
+    | '/robots.txt'
     | '/search'
+    | '/sitemap.xml'
     | '/admin/blogs'
     | '/blog/$slug'
     | '/category/$slug'
     | '/prop-firms/$slug'
     | '/admin/'
     | '/prop-firms/'
+    | '/api/ai/generate-blog'
+    | '/api/public/cron/auto-blog'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -148,13 +188,17 @@ export interface FileRouteTypes {
     | '/auth'
     | '/payouts'
     | '/promo-codes'
+    | '/robots.txt'
     | '/search'
+    | '/sitemap.xml'
     | '/admin/blogs'
     | '/blog/$slug'
     | '/category/$slug'
     | '/prop-firms/$slug'
     | '/admin'
     | '/prop-firms'
+    | '/api/ai/generate-blog'
+    | '/api/public/cron/auto-blog'
   id:
     | '__root__'
     | '/'
@@ -162,13 +206,17 @@ export interface FileRouteTypes {
     | '/auth'
     | '/payouts'
     | '/promo-codes'
+    | '/robots.txt'
     | '/search'
+    | '/sitemap.xml'
     | '/admin/blogs'
     | '/blog/$slug'
     | '/category/$slug'
     | '/prop-firms/$slug'
     | '/admin/'
     | '/prop-firms/'
+    | '/api/ai/generate-blog'
+    | '/api/public/cron/auto-blog'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -177,22 +225,40 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   PayoutsRoute: typeof PayoutsRoute
   PromoCodesRoute: typeof PromoCodesRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
   SearchRoute: typeof SearchRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   AdminBlogsRoute: typeof AdminBlogsRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CategorySlugRoute: typeof CategorySlugRoute
   PropFirmsSlugRoute: typeof PropFirmsSlugRoute
   AdminIndexRoute: typeof AdminIndexRoute
   PropFirmsIndexRoute: typeof PropFirmsIndexRoute
+  ApiAiGenerateBlogRoute: typeof ApiAiGenerateBlogRoute
+  ApiPublicCronAutoBlogRoute: typeof ApiPublicCronAutoBlogRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/search': {
       id: '/search'
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/promo-codes': {
@@ -272,6 +338,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBlogsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/ai/generate-blog': {
+      id: '/api/ai/generate-blog'
+      path: '/api/ai/generate-blog'
+      fullPath: '/api/ai/generate-blog'
+      preLoaderRoute: typeof ApiAiGenerateBlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/cron/auto-blog': {
+      id: '/api/public/cron/auto-blog'
+      path: '/api/public/cron/auto-blog'
+      fullPath: '/api/public/cron/auto-blog'
+      preLoaderRoute: typeof ApiPublicCronAutoBlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -281,13 +361,17 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   PayoutsRoute: PayoutsRoute,
   PromoCodesRoute: PromoCodesRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
   SearchRoute: SearchRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   AdminBlogsRoute: AdminBlogsRoute,
   BlogSlugRoute: BlogSlugRoute,
   CategorySlugRoute: CategorySlugRoute,
   PropFirmsSlugRoute: PropFirmsSlugRoute,
   AdminIndexRoute: AdminIndexRoute,
   PropFirmsIndexRoute: PropFirmsIndexRoute,
+  ApiAiGenerateBlogRoute: ApiAiGenerateBlogRoute,
+  ApiPublicCronAutoBlogRoute: ApiPublicCronAutoBlogRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
