@@ -101,6 +101,7 @@ function AdminPage() {
           <div className="mt-3 flex gap-2">
             <button onClick={runCron} className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Run auto-batch now</button>
             <Link to="/admin/blogs" className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Manage blogs</Link>
+            <Link to="/admin/manage" className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Manage everything</Link>
           </div>
           {msg && <p className="mt-3 text-sm text-primary">{msg}</p>}
         </section>

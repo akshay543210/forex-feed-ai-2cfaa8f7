@@ -27,6 +27,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as PropFirmsSlugRouteImport } from './routes/prop-firms.$slug'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AdminManageRouteImport } from './routes/admin.manage'
 import { Route as AdminBlogsRouteImport } from './routes/admin.blogs'
 import { Route as ApiAiGenerateBlogRouteImport } from './routes/api/ai/generate-blog'
 import { Route as ApiPublicCronAutoBlogRouteImport } from './routes/api/public/cron/auto-blog'
@@ -121,6 +122,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminManageRoute = AdminManageRouteImport.update({
+  id: '/admin/manage',
+  path: '/admin/manage',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminBlogsRoute = AdminBlogsRouteImport.update({
   id: '/admin/blogs',
   path: '/admin/blogs',
@@ -152,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/blogs': typeof AdminBlogsRoute
+  '/admin/manage': typeof AdminManageRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/category/$slug': typeof CategorySlugRoute
   '/prop-firms/$slug': typeof PropFirmsSlugRoute
@@ -175,6 +182,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/blogs': typeof AdminBlogsRoute
+  '/admin/manage': typeof AdminManageRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/category/$slug': typeof CategorySlugRoute
   '/prop-firms/$slug': typeof PropFirmsSlugRoute
@@ -199,6 +207,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/blogs': typeof AdminBlogsRoute
+  '/admin/manage': typeof AdminManageRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/category/$slug': typeof CategorySlugRoute
   '/prop-firms/$slug': typeof PropFirmsSlugRoute
@@ -224,6 +233,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/blogs'
+    | '/admin/manage'
     | '/blog/$slug'
     | '/category/$slug'
     | '/prop-firms/$slug'
@@ -247,6 +257,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/blogs'
+    | '/admin/manage'
     | '/blog/$slug'
     | '/category/$slug'
     | '/prop-firms/$slug'
@@ -270,6 +281,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/blogs'
+    | '/admin/manage'
     | '/blog/$slug'
     | '/category/$slug'
     | '/prop-firms/$slug'
@@ -294,6 +306,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   AdminBlogsRoute: typeof AdminBlogsRoute
+  AdminManageRoute: typeof AdminManageRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CategorySlugRoute: typeof CategorySlugRoute
   PropFirmsSlugRoute: typeof PropFirmsSlugRoute
@@ -431,6 +444,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/manage': {
+      id: '/admin/manage'
+      path: '/admin/manage'
+      fullPath: '/admin/manage'
+      preLoaderRoute: typeof AdminManageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/blogs': {
       id: '/admin/blogs'
       path: '/admin/blogs'
@@ -470,6 +490,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   AdminBlogsRoute: AdminBlogsRoute,
+  AdminManageRoute: AdminManageRoute,
   BlogSlugRoute: BlogSlugRoute,
   CategorySlugRoute: CategorySlugRoute,
   PropFirmsSlugRoute: PropFirmsSlugRoute,
