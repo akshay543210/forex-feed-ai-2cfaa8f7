@@ -13,6 +13,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as PromoCodesRouteImport } from './routes/promo-codes'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PayoutsRouteImport } from './routes/payouts'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -46,6 +47,11 @@ const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
 const PromoCodesRoute = PromoCodesRouteImport.update({
   id: '/promo-codes',
   path: '/promo-codes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PayoutsRoute = PayoutsRouteImport.update({
@@ -126,6 +132,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/payouts': typeof PayoutsRoute
+  '/privacy': typeof PrivacyRoute
   '/promo-codes': typeof PromoCodesRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/search': typeof SearchRoute
@@ -146,6 +153,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/payouts': typeof PayoutsRoute
+  '/privacy': typeof PrivacyRoute
   '/promo-codes': typeof PromoCodesRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/search': typeof SearchRoute
@@ -167,6 +175,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/payouts': typeof PayoutsRoute
+  '/privacy': typeof PrivacyRoute
   '/promo-codes': typeof PromoCodesRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/search': typeof SearchRoute
@@ -189,6 +198,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/payouts'
+    | '/privacy'
     | '/promo-codes'
     | '/robots.txt'
     | '/search'
@@ -209,6 +219,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/payouts'
+    | '/privacy'
     | '/promo-codes'
     | '/robots.txt'
     | '/search'
@@ -229,6 +240,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/payouts'
+    | '/privacy'
     | '/promo-codes'
     | '/robots.txt'
     | '/search'
@@ -250,6 +262,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
   PayoutsRoute: typeof PayoutsRoute
+  PrivacyRoute: typeof PrivacyRoute
   PromoCodesRoute: typeof PromoCodesRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SearchRoute: typeof SearchRoute
@@ -292,6 +305,13 @@ declare module '@tanstack/react-router' {
       path: '/promo-codes'
       fullPath: '/promo-codes'
       preLoaderRoute: typeof PromoCodesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/payouts': {
@@ -402,6 +422,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
   PayoutsRoute: PayoutsRoute,
+  PrivacyRoute: PrivacyRoute,
   PromoCodesRoute: PromoCodesRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SearchRoute: SearchRoute,
@@ -418,3 +439,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
