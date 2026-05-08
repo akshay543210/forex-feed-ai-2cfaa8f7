@@ -14,6 +14,7 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as PromoCodesRouteImport } from './routes/promo-codes'
 import { Route as PayoutsRouteImport } from './routes/payouts'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
@@ -50,6 +51,11 @@ const PromoCodesRoute = PromoCodesRouteImport.update({
 const PayoutsRoute = PayoutsRouteImport.update({
   id: '/payouts',
   path: '/payouts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -118,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/auth': typeof AuthRoute
+  '/contact': typeof ContactRoute
   '/payouts': typeof PayoutsRoute
   '/promo-codes': typeof PromoCodesRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -137,6 +144,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/auth': typeof AuthRoute
+  '/contact': typeof ContactRoute
   '/payouts': typeof PayoutsRoute
   '/promo-codes': typeof PromoCodesRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -157,6 +165,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/auth': typeof AuthRoute
+  '/contact': typeof ContactRoute
   '/payouts': typeof PayoutsRoute
   '/promo-codes': typeof PromoCodesRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -178,6 +187,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/account'
     | '/auth'
+    | '/contact'
     | '/payouts'
     | '/promo-codes'
     | '/robots.txt'
@@ -197,6 +207,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/account'
     | '/auth'
+    | '/contact'
     | '/payouts'
     | '/promo-codes'
     | '/robots.txt'
@@ -216,6 +227,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/account'
     | '/auth'
+    | '/contact'
     | '/payouts'
     | '/promo-codes'
     | '/robots.txt'
@@ -236,6 +248,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AccountRoute: typeof AccountRoute
   AuthRoute: typeof AuthRoute
+  ContactRoute: typeof ContactRoute
   PayoutsRoute: typeof PayoutsRoute
   PromoCodesRoute: typeof PromoCodesRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
@@ -286,6 +299,13 @@ declare module '@tanstack/react-router' {
       path: '/payouts'
       fullPath: '/payouts'
       preLoaderRoute: typeof PayoutsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -380,6 +400,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AccountRoute: AccountRoute,
   AuthRoute: AuthRoute,
+  ContactRoute: ContactRoute,
   PayoutsRoute: PayoutsRoute,
   PromoCodesRoute: PromoCodesRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
