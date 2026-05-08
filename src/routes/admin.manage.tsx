@@ -215,7 +215,7 @@ function SubsAdmin() {
 
 function UsersAdmin() {
   const [rows, setRows] = useState<{ user_id: string; role: string; display_name: string | null }[]>([]);
-  const [email, setEmail] = useState(""); const [msg, setMsg] = useState("");
+  const [msg] = useState("");
   const load = async () => {
     const { data: roles } = await supabase.from("user_roles").select("user_id, role").order("created_at", { ascending: false }).limit(200);
     const ids = [...new Set((roles ?? []).map(r => r.user_id))];
