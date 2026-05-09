@@ -39,7 +39,8 @@ async function generateCoverImage(prompt: string): Promise<string | null> {
   } catch (e) { console.error("image gen error", e); return null; }
 }
 
-async function uploadCoverFromDataUrl(admin: ReturnType<typeof createClient>, dataUrl: string, slug: string): Promise<string | null> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function uploadCoverFromDataUrl(admin: any, dataUrl: string, slug: string): Promise<string | null> {
   try {
     const m = dataUrl.match(/^data:(image\/\w+);base64,(.+)$/);
     if (!m) return null;
