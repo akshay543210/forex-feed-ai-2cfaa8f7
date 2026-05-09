@@ -62,6 +62,18 @@ function AdminPage() {
     setMsg(res.ok ? `Auto batch: ${j.created ?? 0} drafts created` : (j.error || "Failed"));
   };
 
+  const backfillImages = async () => {
+    setMsg("Generating cover images for existing blogs...");
+    const { data: session } = await supabase.auth.getSession();
+    const res = await fetch("/api/ai/generate-blog", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.session?.access_token ?? ""}` },
+      body: JSON.stringify({ action: "backfill_images", limit: 10 }),
+    });
+    const j = await res.json();
+    setMsg(res.ok ? `Backfilled ${j.updated}/${j.scanned} blogs with cover images` : (j.error || "Failed"));
+  };
+
   if (loading) return <SiteLayout hideTicker><div className="p-12 text-center"><Loader2 className="h-6 w-6 animate-spin mx-auto" /></div></SiteLayout>;
   if (!authed) return null;
 
