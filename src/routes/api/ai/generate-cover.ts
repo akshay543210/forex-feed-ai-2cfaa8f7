@@ -1,0 +1,68 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { createClient } from "@supabase/supabase-js";
+
+const AI_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
+
+export const Route = createFileRoute("/api/ai/generate-cover")({
+  server: {
+    handlers: {
+      POST: async ({ request }) => {
+        try {
+          const auth = request.headers.get("authorization")?.replace("Bearer ", "");
+          if (!auth) return json({ error: "Unauthorized" }, 401);
+
+          const supabaseUrl = process.env.SUPABASE_URL!;
+          const anon = process.env.SUPABASE_PUBLISHABLE_KEY!;
+          const userClient = createClient(supabaseUrl, anon, { global: { headers: { Authorization: `Bearer ${auth}` } } });
+          const { data: u } = await userClient.auth.getUser();
+          if (!u.user) return json({ error: "Unauthorized" }, 401);
+
+          const { data: roles } = await userClient.from("user_roles").select("role").eq("user_id", u.user.id);
+          if (!(roles ?? []).some(r => ["admin", "moderator", "author"].includes(r.role))) return json({ error: "Forbidden" }, 403);
+
+          const body = await request.json() as { prompt: string; slug: string };
+          if (!body.prompt || !body.slug) return json({ error: "Missing prompt or slug" }, 400);
+
+          const apiKey = process.env.LOVABLE_API_KEY;
+          if (!apiKey) return json({ error: "AI not configured" }, 500);
+
+          const res = await fetch(AI_URL, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+            body: JSON.stringify({
+              model: "google/gemini-2.5-flash-image",
+              messages: [{
+                role: "user",
+                content: `Editorial cover image, 16:9 widescreen, photorealistic, cinematic lighting, dark moody color palette with subtle blue/gold accents, no text, no logos, no watermarks. Subject: ${body.prompt}`,
+              }],
+              modalities: ["image", "text"],
+            }),
+          });
+          if (!res.ok) return json({ error: `Image gen failed: ${res.status}` }, 500);
+          const j = await res.json();
+          const dataUrl = j.choices?.[0]?.message?.images?.[0]?.image_url?.url as string | undefined;
+          if (!dataUrl) return json({ error: "No image returned" }, 500);
+
+          const m = dataUrl.match(/^data:(image\/\w+);base64,(.+)$/);
+          if (!m) return json({ error: "Bad image data" }, 500);
+          const mime = m[1]; const ext = mime.split("/")[1] || "png";
+          const buf = Buffer.from(m[2], "base64");
+
+          const admin = createClient(supabaseUrl, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+          const path = `blog-covers/${body.slug}-${Date.now().toString(36).slice(-5)}.${ext}`;
+          const { error: upErr } = await admin.storage.from("media").upload(path, buf, { contentType: mime, upsert: true });
+          if (upErr) return json({ error: upErr.message }, 500);
+          const { data } = admin.storage.from("media").getPublicUrl(path);
+          return json({ url: data.publicUrl });
+        } catch (e) {
+          console.error("generate-cover error:", e);
+          return json({ error: (e as Error).message }, 500);
+        }
+      },
+    },
+  },
+});
+
+function json(b: unknown, status = 200) {
+  return new Response(JSON.stringify(b), { status, headers: { "Content-Type": "application/json" } });
+}
