@@ -103,7 +103,7 @@ function BlogPage() {
           <img src={blog.cover_image_url} alt={blog.title} className="mt-6 w-full rounded-xl shadow-card" />
         )}
 
-        <div className="prose prose-invert max-w-none mt-8 prose-headings:font-display prose-a:text-primary prose-img:rounded-xl"
+        <div className="prose prose-invert prose-lg max-w-none mt-8 prose-headings:font-display prose-headings:font-bold prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:border-b prose-h2:border-border prose-h2:pb-2 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-p:leading-relaxed prose-p:text-foreground/90 prose-li:my-1 prose-li:marker:text-primary prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-blockquote:border-l-primary prose-blockquote:bg-muted/30 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-img:rounded-xl prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-primary prose-code:before:content-none prose-code:after:content-none prose-hr:border-border"
           dangerouslySetInnerHTML={{ __html: renderMarkdown(blog.content) }} />
 
         {faqArr.length > 0 && (
