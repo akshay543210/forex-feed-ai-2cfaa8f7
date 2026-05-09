@@ -103,7 +103,7 @@ function BlogPage() {
           <img src={blog.cover_image_url} alt={blog.title} className="mt-6 w-full rounded-xl shadow-card" />
         )}
 
-        <div className="prose prose-invert max-w-none mt-8 prose-headings:font-display prose-a:text-primary prose-img:rounded-xl"
+        <div className="prose prose-invert prose-lg max-w-none mt-8 prose-headings:font-display prose-headings:font-bold prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:border-b prose-h2:border-border prose-h2:pb-2 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-p:leading-relaxed prose-p:text-foreground/90 prose-li:my-1 prose-li:marker:text-primary prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-blockquote:border-l-primary prose-blockquote:bg-muted/30 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-img:rounded-xl prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-primary prose-code:before:content-none prose-code:after:content-none prose-hr:border-border"
           dangerouslySetInnerHTML={{ __html: renderMarkdown(blog.content) }} />
 
         {faqArr.length > 0 && (
@@ -157,20 +157,81 @@ function BlogPage() {
   );
 }
 
-// Minimal markdown→HTML for trusted AI-generated content
+// Markdown→HTML for trusted AI-generated content with rich typography
 function renderMarkdown(md: string): string {
   if (!md) return "";
-  // If already HTML, just return
   if (md.trim().startsWith("<")) return md;
-  let html = md
-    .replace(/^### (.*$)/gim, "<h3>$1</h3>")
-    .replace(/^## (.*$)/gim, "<h2>$1</h2>")
-    .replace(/^# (.*$)/gim, "<h1>$1</h1>")
+
+  // Escape HTML first
+  let src = md.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  // Restore intentional markdown blockquote markers we just escaped
+  src = src.replace(/^&gt; /gm, "> ");
+
+  const lines = src.split("\n");
+  const out: string[] = [];
+  let i = 0;
+  const flushList = (buf: string[], ordered: boolean) => {
+    if (!buf.length) return;
+    const tag = ordered ? "ol" : "ul";
+    out.push(`<${tag}>${buf.map(x => `<li>${inline(x)}</li>`).join("")}</${tag}>`);
+    buf.length = 0;
+  };
+  const inline = (s: string) => s
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\*(.+?)\*/g, "<em>$1</em>")
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-    .replace(/^\s*[-*] (.*)$/gim, "<li>$1</li>");
-  html = html.replace(/(<li>[\s\S]+?<\/li>)/g, "<ul>$1</ul>");
-  html = html.split(/\n{2,}/).map(p => /^<(h\d|ul|ol|blockquote)/.test(p.trim()) ? p : `<p>${p.replace(/\n/g, "<br/>")}</p>`).join("\n");
-  return html;
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+
+  const ulBuf: string[] = [];
+  const olBuf: string[] = [];
+  while (i < lines.length) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (/^#{1,6}\s/.test(trimmed)) {
+      flushList(ulBuf, false); flushList(olBuf, true);
+      const level = trimmed.match(/^#+/)![0].length;
+      const text = trimmed.replace(/^#+\s/, "");
+      out.push(`<h${level}>${inline(text)}</h${level}>`);
+      i++; continue;
+    }
+    if (/^>\s?/.test(trimmed)) {
+      flushList(ulBuf, false); flushList(olBuf, true);
+      const quoteLines: string[] = [];
+      while (i < lines.length && /^>\s?/.test(lines[i].trim())) {
+        quoteLines.push(lines[i].trim().replace(/^>\s?/, ""));
+        i++;
+      }
+      out.push(`<blockquote>${inline(quoteLines.join(" "))}</blockquote>`);
+      continue;
+    }
+    if (/^[-*]\s/.test(trimmed)) {
+      flushList(olBuf, true);
+      ulBuf.push(trimmed.replace(/^[-*]\s/, ""));
+      i++; continue;
+    }
+    if (/^\d+\.\s/.test(trimmed)) {
+      flushList(ulBuf, false);
+      olBuf.push(trimmed.replace(/^\d+\.\s/, ""));
+      i++; continue;
+    }
+    if (trimmed === "") {
+      flushList(ulBuf, false); flushList(olBuf, true);
+      i++; continue;
+    }
+    if (/^(---|\*\*\*|___)$/.test(trimmed)) {
+      flushList(ulBuf, false); flushList(olBuf, true);
+      out.push("<hr/>");
+      i++; continue;
+    }
+    // Paragraph: gather consecutive non-empty, non-special lines
+    const paraLines: string[] = [];
+    while (i < lines.length && lines[i].trim() !== "" && !/^(#{1,6}\s|>|[-*]\s|\d+\.\s|---|\*\*\*|___)/.test(lines[i].trim())) {
+      paraLines.push(lines[i].trim());
+      i++;
+    }
+    out.push(`<p>${inline(paraLines.join(" "))}</p>`);
+  }
+  flushList(ulBuf, false); flushList(olBuf, true);
+  return out.join("\n");
 }

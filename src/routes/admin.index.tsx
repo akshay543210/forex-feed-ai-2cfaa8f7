@@ -62,6 +62,18 @@ function AdminPage() {
     setMsg(res.ok ? `Auto batch: ${j.created ?? 0} drafts created` : (j.error || "Failed"));
   };
 
+  const backfillImages = async () => {
+    setMsg("Generating cover images for existing blogs...");
+    const { data: session } = await supabase.auth.getSession();
+    const res = await fetch("/api/ai/generate-blog", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.session?.access_token ?? ""}` },
+      body: JSON.stringify({ action: "backfill_images", limit: 10 }),
+    });
+    const j = await res.json();
+    setMsg(res.ok ? `Backfilled ${j.updated}/${j.scanned} blogs with cover images` : (j.error || "Failed"));
+  };
+
   if (loading) return <SiteLayout hideTicker><div className="p-12 text-center"><Loader2 className="h-6 w-6 animate-spin mx-auto" /></div></SiteLayout>;
   if (!authed) return null;
 
@@ -98,8 +110,9 @@ function AdminPage() {
               {generating && <Loader2 className="h-4 w-4 animate-spin" />} Generate draft
             </button>
           </div>
-          <div className="mt-3 flex gap-2">
+          <div className="mt-3 flex flex-wrap gap-2">
             <button onClick={runCron} className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Run auto-batch now</button>
+            <button onClick={backfillImages} className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Backfill cover images</button>
             <Link to="/admin/blogs" className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Manage blogs</Link>
             <Link to="/admin/manage" className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Manage everything</Link>
           </div>

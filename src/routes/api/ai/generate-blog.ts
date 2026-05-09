@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createClient } from "@supabase/supabase-js";
 
+const AI_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
+
 async function callAI(messages: Array<{role: string; content: string}>) {
   const apiKey = process.env.LOVABLE_API_KEY;
   if (!apiKey) throw new Error("LOVABLE_API_KEY missing");
-  const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+  const res = await fetch(AI_URL, {
     method: "POST",
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
     body: JSON.stringify({ model: "google/gemini-2.5-flash", messages }),
@@ -12,6 +14,45 @@ async function callAI(messages: Array<{role: string; content: string}>) {
   if (!res.ok) throw new Error(`AI ${res.status}: ${await res.text()}`);
   const j = await res.json();
   return j.choices?.[0]?.message?.content as string;
+}
+
+async function generateCoverImage(prompt: string): Promise<string | null> {
+  const apiKey = process.env.LOVABLE_API_KEY;
+  if (!apiKey) return null;
+  try {
+    const res = await fetch(AI_URL, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash-image",
+        messages: [{
+          role: "user",
+          content: `Editorial cover image, 16:9 widescreen, photorealistic, cinematic lighting, dark moody color palette with subtle blue/gold accents, no text, no logos, no watermarks. Subject: ${prompt}`,
+        }],
+        modalities: ["image", "text"],
+      }),
+    });
+    if (!res.ok) { console.error("image gen failed", res.status, await res.text()); return null; }
+    const j = await res.json();
+    const dataUrl = j.choices?.[0]?.message?.images?.[0]?.image_url?.url as string | undefined;
+    return dataUrl ?? null;
+  } catch (e) { console.error("image gen error", e); return null; }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function uploadCoverFromDataUrl(admin: any, dataUrl: string, slug: string): Promise<string | null> {
+  try {
+    const m = dataUrl.match(/^data:(image\/\w+);base64,(.+)$/);
+    if (!m) return null;
+    const mime = m[1];
+    const ext = mime.split("/")[1] || "png";
+    const buf = Buffer.from(m[2], "base64");
+    const path = `blog-covers/${slug}.${ext}`;
+    const { error } = await admin.storage.from("media").upload(path, buf, { contentType: mime, upsert: true });
+    if (error) { console.error("upload error", error); return null; }
+    const { data } = admin.storage.from("media").getPublicUrl(path);
+    return data.publicUrl;
+  } catch (e) { console.error("upload exception", e); return null; }
 }
 
 function slugify(s: string) {
@@ -32,25 +73,38 @@ export async function generateBlogDraft(opts: {
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
   const admin = createClient(supabaseUrl, serviceKey);
 
-  // Dedup check
   const norm = opts.topic.toLowerCase().trim();
   const { data: existing } = await admin.from("topic_history").select("id").ilike("normalized_topic", `%${norm.slice(0, 40)}%`).limit(1);
   if (existing && existing.length > 0) {
     throw new Error("Similar topic already covered recently");
   }
 
-  const sysPrompt = `You are a senior financial journalist writing for PropFirm Knowledge — an authoritative media platform covering forex markets and proprietary trading firms. Write in the style of Bloomberg + TradingView: factual, engaging, data-driven, and human. Avoid filler, AI clichés, and repetition. Cite reasoning, not URLs. Output strict JSON only.`;
+  const sysPrompt = `You are a senior financial journalist writing for PropFirm Knowledge — an authoritative media platform on forex markets and proprietary trading firms. Voice: Bloomberg + TradingView. Factual, engaging, data-driven, human. No filler, no AI clichés.
+
+FORMAT RULES (CRITICAL):
+- Open with a strong 2-sentence hook paragraph (no heading above it).
+- Use ## for main sections (5-8 sections). Use ### for sub-points when needed.
+- Keep paragraphs SHORT: 2-4 sentences max. Lots of white space.
+- Use bullet lists (- item) liberally for facts, criteria, pros/cons, takeaways.
+- Use numbered lists (1. item) for steps or rankings.
+- Use **bold** to highlight key numbers, names, percentages.
+- Use > blockquotes for expert quotes or key insights.
+- Always include a "## Key Takeaways" bullet list near the end.
+- Always include a "## Bottom Line" 2-3 sentence closer.
+
+Output strict JSON only.`;
 
   const userPrompt = `Topic: ${opts.topic}
 
-Write a 1200–2000 word original news/analysis article. Return JSON with this exact shape:
+Write a 1200–1800 word original news/analysis article following the FORMAT RULES exactly. Return JSON with this exact shape:
 {
   "title": "SEO-optimized headline (under 70 chars)",
   "seo_title": "alternate SEO title under 60 chars",
   "seo_description": "compelling meta description under 155 chars",
   "seo_keywords": ["5","to","8","keywords"],
   "excerpt": "2-3 sentence hook",
-  "content": "FULL article in markdown with ## headings, **bold**, lists. Include hook, context, key developments, expert framing, takeaways, outlook.",
+  "content": "FULL article in markdown following format rules: hook paragraph, ## sections, short paragraphs, bullet/numbered lists, **bold** highlights, > quotes, ## Key Takeaways, ## Bottom Line",
+  "cover_image_prompt": "vivid one-sentence description of the ideal editorial cover image for this article (subject + mood, no text)",
   "faq": [{"question":"...","answer":"..."}, ... 3-5 items],
   "category_slug": "one of: forex-news, fundamentals, prop-firm-reviews, payout-updates, promo-codes, industry-news, trading-education, scam-alerts, trading-psychology, market-analysis"
 }`;
@@ -60,7 +114,6 @@ Write a 1200–2000 word original news/analysis article. Return JSON with this e
     { role: "user", content: userPrompt },
   ]);
 
-  // Extract JSON (handle code fences)
   const match = raw.match(/\{[\s\S]*\}/);
   if (!match) throw new Error("AI did not return JSON");
   const parsed = JSON.parse(match[0]);
@@ -71,6 +124,12 @@ Write a 1200–2000 word original news/analysis article. Return JSON with this e
   const slugBase = slugify(parsed.title);
   const slug = `${slugBase}-${Date.now().toString(36).slice(-5)}`;
 
+  // Generate cover image (best-effort, non-blocking on failure)
+  let coverUrl: string | null = null;
+  const imgPrompt = parsed.cover_image_prompt || parsed.title;
+  const dataUrl = await generateCoverImage(imgPrompt);
+  if (dataUrl) coverUrl = await uploadCoverFromDataUrl(admin, dataUrl, slug);
+
   const status = opts.source === "ai_auto"
     ? (cat?.workflow_mode === "auto_publish" ? "published" : cat?.workflow_mode === "draft_only" ? "draft" : "pending_approval")
     : "draft";
@@ -80,6 +139,7 @@ Write a 1200–2000 word original news/analysis article. Return JSON with this e
     title: parsed.title,
     excerpt: parsed.excerpt,
     content: parsed.content,
+    cover_image_url: coverUrl,
     seo_title: parsed.seo_title,
     seo_description: parsed.seo_description,
     seo_keywords: parsed.seo_keywords,
@@ -92,7 +152,7 @@ Write a 1200–2000 word original news/analysis article. Return JSON with this e
     ai_quality_score: 8.5,
     plagiarism_score: 5.0,
     published_at: status === "published" ? new Date().toISOString() : null,
-  }).select("id, slug, title, status").single();
+  }).select("id, slug, title, status, cover_image_url").single();
 
   if (error) throw error;
 
@@ -103,6 +163,22 @@ Write a 1200–2000 word original news/analysis article. Return JSON with this e
   });
 
   return blog;
+}
+
+export async function backfillCoverImages(limit = 10) {
+  const admin = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+  const { data: blogs } = await admin.from("blogs").select("id, slug, title, excerpt").or("cover_image_url.is.null,cover_image_url.eq.").limit(limit);
+  let updated = 0;
+  for (const b of blogs ?? []) {
+    const prompt = `${b.title}. ${b.excerpt ?? ""}`.slice(0, 300);
+    const dataUrl = await generateCoverImage(prompt);
+    if (!dataUrl) continue;
+    const url = await uploadCoverFromDataUrl(admin, dataUrl, b.slug);
+    if (!url) continue;
+    await admin.from("blogs").update({ cover_image_url: url }).eq("id", b.id);
+    updated++;
+  }
+  return { scanned: blogs?.length ?? 0, updated };
 }
 
 export const Route = createFileRoute("/api/ai/generate-blog")({
@@ -123,7 +199,13 @@ export const Route = createFileRoute("/api/ai/generate-blog")({
           const isStaff = (roles ?? []).some(r => ["admin","moderator","author"].includes(r.role));
           if (!isStaff) return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: { "Content-Type": "application/json" } });
 
-          const body = await request.json() as { topic: string; categorySlug?: string };
+          const body = await request.json() as { topic?: string; categorySlug?: string; action?: "backfill_images"; limit?: number };
+
+          if (body.action === "backfill_images") {
+            const result = await backfillCoverImages(body.limit ?? 10);
+            return new Response(JSON.stringify(result), { headers: { "Content-Type": "application/json" } });
+          }
+
           if (!body.topic) return new Response(JSON.stringify({ error: "Missing topic" }), { status: 400, headers: { "Content-Type": "application/json" } });
 
           const blog = await generateBlogDraft({
