@@ -110,8 +110,9 @@ function AdminPage() {
               {generating && <Loader2 className="h-4 w-4 animate-spin" />} Generate draft
             </button>
           </div>
-          <div className="mt-3 flex gap-2">
+          <div className="mt-3 flex flex-wrap gap-2">
             <button onClick={runCron} className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Run auto-batch now</button>
+            <button onClick={backfillImages} className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Backfill cover images</button>
             <Link to="/admin/blogs" className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Manage blogs</Link>
             <Link to="/admin/manage" className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Manage everything</Link>
           </div>
