@@ -111,6 +111,7 @@ function AdminPage() {
             </button>
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
+            <Link to="/admin/editor" className="rounded-md bg-gradient-primary text-primary-foreground px-3 py-1.5 text-xs font-medium">✍️ Write new article</Link>
             <button onClick={runCron} className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Run auto-batch now</button>
             <button onClick={backfillImages} className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Backfill cover images</button>
             <Link to="/admin/blogs" className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Manage blogs</Link>

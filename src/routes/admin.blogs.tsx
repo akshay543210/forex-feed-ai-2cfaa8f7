@@ -43,7 +43,10 @@ function AdminBlogs() {
       <div className="mx-auto max-w-6xl px-4 py-10">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <h1 className="font-display text-3xl font-bold">Blogs</h1>
-          <Link to="/admin" className="text-xs text-primary">← Back</Link>
+          <div className="flex gap-2 items-center">
+            <Link to="/admin/editor" className="rounded-md bg-gradient-primary text-primary-foreground px-3 py-1.5 text-xs font-medium">+ New article</Link>
+            <Link to="/admin" className="text-xs text-primary">← Back</Link>
+          </div>
         </div>
         <div className="mt-4 flex gap-2">
           {["all","draft","pending_approval","published","rejected"].map(s => (
@@ -60,6 +63,7 @@ function AdminBlogs() {
                 <p className="text-xs text-muted-foreground">/{r.slug} · {r.source} · {formatRelative(r.created_at)} {r.ai_quality_score ? `· quality ${r.ai_quality_score}` : ""}</p>
               </div>
               <span className="text-xs rounded-full bg-muted px-2 py-0.5">{r.status}</span>
+              <Link to="/admin/editor" search={{ id: r.id }} className="text-xs rounded-md border border-border px-2 py-1 hover:bg-muted">Edit</Link>
               {r.status !== "published" && <button onClick={() => setStatus(r.id, "published")} className="text-xs rounded-md bg-gradient-primary px-2 py-1 text-primary-foreground">Publish</button>}
               {r.status !== "rejected" && <button onClick={() => setStatus(r.id, "rejected")} className="text-xs rounded-md border border-border px-2 py-1">Reject</button>}
               <Link to="/blog/$slug" params={{ slug: r.slug }} className="text-xs text-primary">View</Link>
