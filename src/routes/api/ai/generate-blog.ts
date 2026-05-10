@@ -137,6 +137,20 @@ Return JSON with this exact shape:
   const dataUrl = await generateCoverImage(imgPrompt);
   if (dataUrl) coverUrl = await uploadCoverFromDataUrl(admin, dataUrl, slug);
 
+  // Process inline image placeholders [[IMAGE:n|alt|prompt]]
+  let processedContent: string = parsed.content;
+  const placeholderRe = /\[\[IMAGE:(\d+)\|([^|]+)\|([^\]]+)\]\]/g;
+  const matches = [...processedContent.matchAll(placeholderRe)];
+  for (const m of matches) {
+    const [full, n, alt, prompt] = m;
+    try {
+      const d = await generateCoverImage(prompt.trim());
+      if (!d) { processedContent = processedContent.replace(full, ""); continue; }
+      const url = await uploadCoverFromDataUrl(admin, d, `${slug}-inline-${n}`);
+      processedContent = processedContent.replace(full, url ? `\n\n![${alt.trim()}](${url})\n\n` : "");
+    } catch { processedContent = processedContent.replace(full, ""); }
+  }
+
   const status = opts.source === "ai_auto"
     ? (cat?.workflow_mode === "auto_publish" ? "published" : cat?.workflow_mode === "draft_only" ? "draft" : "pending_approval")
     : "draft";
@@ -145,7 +159,7 @@ Return JSON with this exact shape:
     slug,
     title: parsed.title,
     excerpt: parsed.excerpt,
-    content: parsed.content,
+    content: processedContent,
     cover_image_url: coverUrl,
     seo_title: parsed.seo_title,
     seo_description: parsed.seo_description,
