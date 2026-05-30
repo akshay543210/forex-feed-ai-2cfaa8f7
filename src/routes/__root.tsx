@@ -84,7 +84,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:description", content: "PropFirm Insights is an AI-powered platform for automated forex and prop firm news, reviews, and education." },
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/jTRbQWys4nWmuQwEnqxDH1fIWVo2/social-images/social-1778222014523-20260117_155732.webp" },
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/jTRbQWys4nWmuQwEnqxDH1fIWVo2/social-images/social-1778222014523-20260117_155732.webp" },
-      { name: "google-site-verification", content: "AzLlREvHW0301EDPCUURPL-9Sf1D5LOxQVl0OdTh5gI" },
     ],
     links: [
       {
@@ -103,6 +102,10 @@ function RootShell({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <meta
+          name="google-site-verification"
+          content="AzLlREvHW0301EDPCUURPL-9Sf1D5LOxQVl0OdTh5gI"
+        />
         <HeadContent />
       </head>
       <body>
