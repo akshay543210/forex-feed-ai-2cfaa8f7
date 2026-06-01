@@ -3,7 +3,7 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { buildHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/privacy")({
-  head: () => buildHead({ title: "Privacy Policy — PropFirm Knowledge", description: "How PropFirm Knowledge collects, uses and protects your personal data.", type: "website" }),
+  head: () => buildHead({ title: "Privacy Policy", description: "How PropFirm Knowledge collects, uses and protects your personal data, including cookies, analytics and third-party sharing.", type: "website", path: "/privacy" }),
   component: () => (
     <SiteLayout>
       <article className="mx-auto max-w-3xl px-4 py-16 prose prose-invert">

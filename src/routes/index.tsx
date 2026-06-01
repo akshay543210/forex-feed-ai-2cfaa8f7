@@ -13,9 +13,10 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   head: () => buildHead({
-    title: "PropFirm Knowledge — Forex News, Prop Firm Reviews & Payouts",
+    title: "Forex News, Prop Firm Reviews & Payouts",
     description: "AI-curated forex news, in-depth prop firm reviews, verified payouts, promo codes and trading education — your all-in-one media platform.",
     type: "website",
+    path: "/",
   }),
   component: HomePage,
 });

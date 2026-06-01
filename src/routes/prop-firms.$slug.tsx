@@ -12,10 +12,11 @@ export const Route = createFileRoute("/prop-firms/$slug")({
     if (!data) throw notFound();
     return { firm: data };
   },
-  head: ({ loaderData }) => buildHead({
-    title: loaderData?.firm ? `${loaderData.firm.name} Review — Rules, Payouts & Trust Score` : "Prop Firm",
-    description: loaderData?.firm?.description ?? "Prop firm review.",
+  head: ({ loaderData, params }) => buildHead({
+    title: loaderData?.firm ? `${loaderData.firm.name} Review` : "Prop Firm",
+    description: loaderData?.firm?.description ?? `In-depth review of ${loaderData?.firm?.name ?? "this prop firm"}: rules, payouts, trust score, pros, cons and active promo codes.`,
     image: loaderData?.firm?.logo_url ?? undefined,
+    path: `/prop-firms/${params.slug}`,
   }),
   notFoundComponent: () => <SiteLayout><div className="p-12 text-center"><h1 className="text-3xl font-bold">Firm not found</h1></div></SiteLayout>,
   errorComponent: ({ error }) => <SiteLayout><div className="p-12 text-center text-destructive">{error.message}</div></SiteLayout>,
@@ -81,7 +82,7 @@ function FirmPage() {
           <section className="mt-8 grid md:grid-cols-2 gap-4">
             {firm.pros?.length > 0 && (
               <div className="rounded-xl glass p-5">
-                <h3 className="font-display font-bold mb-3 text-success">Pros</h3>
+                <h2 className="font-display font-bold mb-3 text-success">Pros</h2>
                 <ul className="space-y-2 text-sm">
                   {firm.pros.map((p: string, i: number) => <li key={i} className="flex gap-2"><Check className="h-4 w-4 text-success shrink-0 mt-0.5" />{p}</li>)}
                 </ul>
@@ -89,7 +90,7 @@ function FirmPage() {
             )}
             {firm.cons?.length > 0 && (
               <div className="rounded-xl glass p-5">
-                <h3 className="font-display font-bold mb-3 text-destructive">Cons</h3>
+                <h2 className="font-display font-bold mb-3 text-destructive">Cons</h2>
                 <ul className="space-y-2 text-sm">
                   {firm.cons.map((p: string, i: number) => <li key={i} className="flex gap-2"><X className="h-4 w-4 text-destructive shrink-0 mt-0.5" />{p}</li>)}
                 </ul>

@@ -4,9 +4,10 @@ import { buildHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
   head: () => buildHead({
-    title: "Contact — PropFirm Knowledge",
+    title: "Contact",
     description: "Get in touch with the PropFirm Knowledge editorial team for tips, partnerships, or scam reports.",
     type: "website",
+    path: "/contact",
   }),
   component: ContactPage,
 });

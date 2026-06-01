@@ -8,8 +8,9 @@ import { formatRelative, formatUSD } from "@/lib/format";
 
 export const Route = createFileRoute("/payouts")({
   head: () => buildHead({
-    title: "Verified Prop Firm Payouts — Approved & Rejected Reports",
-    description: "Community-submitted, verified payout proofs from prop trading firms. See who is paying — and who is rejecting traders.",
+    title: "Verified Prop Firm Payouts",
+    description: "Community-submitted, verified payout proofs from prop trading firms. See who is paying — and who is rejecting traders — with full reports.",
+    path: "/payouts",
   }),
   component: PayoutsPage,
 });

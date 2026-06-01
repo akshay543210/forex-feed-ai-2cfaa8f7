@@ -7,8 +7,9 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/promo-codes")({
   head: () => buildHead({
-    title: "Active Prop Firm Promo Codes & Discount Coupons",
-    description: "All currently active discount codes for top proprietary trading firms — verified and updated daily.",
+    title: "Active Prop Firm Promo Codes",
+    description: "All currently active discount codes and coupons for top proprietary trading firms — verified and updated daily by our editorial team.",
+    path: "/promo-codes",
   }),
   component: PromosPage,
 });
