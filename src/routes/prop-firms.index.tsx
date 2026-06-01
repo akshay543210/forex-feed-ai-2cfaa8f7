@@ -8,8 +8,9 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/prop-firms/")({
   head: () => buildHead({
-    title: "Prop Firm Directory — Reviews, Trust Scores & Payouts",
-    description: "Compare top proprietary trading firms — funding levels, profit splits, payout speeds, trust scores and verified trader reviews.",
+    title: "Prop Firm Directory & Reviews",
+    description: "Compare top proprietary trading firms — funding levels, profit splits, payout speeds, trust scores and verified trader reviews in one directory.",
+    path: "/prop-firms",
   }),
   component: FirmsList,
 });

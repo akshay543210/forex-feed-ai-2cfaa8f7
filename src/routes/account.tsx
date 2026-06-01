@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
 export const Route = createFileRoute("/account")({
-  head: () => buildHead({ title: "Account", description: "Manage your account" }),
+  head: () => buildHead({ title: "Account", description: "Manage your PropFirm Knowledge account, profile and preferences.", path: "/account" }),
   component: AccountPage,
 });
 

@@ -3,7 +3,7 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { buildHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/disclaimer")({
-  head: () => buildHead({ title: "Disclaimer — PropFirm Knowledge", description: "Risk and editorial disclaimer for PropFirm Knowledge.", type: "website" }),
+  head: () => buildHead({ title: "Disclaimer", description: "Risk and editorial disclaimer for PropFirm Knowledge — trading involves risk and content is for informational purposes only.", type: "website", path: "/disclaimer" }),
   component: () => (
     <SiteLayout>
       <article className="mx-auto max-w-3xl px-4 py-16 prose prose-invert">

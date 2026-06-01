@@ -5,7 +5,7 @@ import { buildHead } from "@/lib/seo";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/auth")({
-  head: () => buildHead({ title: "Sign in", description: "Sign in or create an account." }),
+  head: () => buildHead({ title: "Sign in", description: "Sign in or create a PropFirm Knowledge account to comment on reviews, submit payouts and save articles.", path: "/auth" }),
   component: AuthPage,
 });
 

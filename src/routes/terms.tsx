@@ -3,7 +3,7 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { buildHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/terms")({
-  head: () => buildHead({ title: "Terms of Service — PropFirm Knowledge", description: "Terms of service governing the use of PropFirm Knowledge.", type: "website" }),
+  head: () => buildHead({ title: "Terms of Service", description: "Terms of service governing the use of PropFirm Knowledge, including user obligations, content rights and liability limits.", type: "website", path: "/terms" }),
   component: () => (
     <SiteLayout>
       <article className="mx-auto max-w-3xl px-4 py-16 prose prose-invert">

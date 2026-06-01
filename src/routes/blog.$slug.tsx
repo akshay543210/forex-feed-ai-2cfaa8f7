@@ -16,9 +16,9 @@ export const Route = createFileRoute("/blog/$slug")({
     if (!data) throw notFound();
     return { blog: data };
   },
-  head: ({ loaderData }) => {
+  head: ({ loaderData, params }) => {
     const b = loaderData?.blog;
-    if (!b) return buildHead({ title: "Article", description: "" });
+    if (!b) return buildHead({ title: "Article", description: "", path: `/blog/${params.slug}` });
     return buildHead({
       title: b.seo_title ?? b.title,
       description: b.seo_description ?? b.excerpt ?? "",
@@ -28,6 +28,7 @@ export const Route = createFileRoute("/blog/$slug")({
       publishedTime: b.published_at ?? undefined,
       modifiedTime: b.last_updated_at ?? b.updated_at ?? undefined,
       author: b.author?.display_name ?? "Editorial Team",
+      path: `/blog/${params.slug}`,
     });
   },
   notFoundComponent: () => <SiteLayout><div className="mx-auto max-w-3xl p-12 text-center"><h1 className="text-3xl font-bold">Article not found</h1><Link to="/" className="text-primary">Back home</Link></div></SiteLayout>,

@@ -12,9 +12,10 @@ export const Route = createFileRoute("/category/$slug")({
     if (!data) throw notFound();
     return { category: data };
   },
-  head: ({ loaderData }) => buildHead({
+  head: ({ loaderData, params }) => buildHead({
     title: loaderData?.category ? `${loaderData.category.name} — Latest Articles` : "Category",
-    description: loaderData?.category?.description ?? "Latest articles",
+    description: loaderData?.category?.description ?? `Latest articles, news and analysis in the ${loaderData?.category?.name ?? "selected"} category on PropFirm Knowledge.`,
+    path: `/category/${params.slug}`,
   }),
   notFoundComponent: () => (
     <SiteLayout><div className="mx-auto max-w-3xl p-12 text-center"><h1 className="text-3xl font-bold">Category not found</h1></div></SiteLayout>
