@@ -1,0 +1,21 @@
+# PropFirm Knowledge
+
+> All-in-one media platform for the forex and prop firm industry: AI-curated news, in-depth prop firm reviews, verified payouts, promo codes and trading education.
+
+PropFirm Knowledge publishes daily forex news, fundamental analysis, prop firm reviews with trust scores, verified payout reports and active promo codes for prop trading firms.
+
+## Pages
+
+- [Home](/): Latest forex news, featured stories and editorial highlights.
+- [About](/about): Mission, editorial standards and the team behind PropFirm Knowledge.
+- [Prop Firms](/prop-firms): Directory of prop trading firms with reviews, trust scores and payout terms.
+- [Payouts](/payouts): Verified prop firm payout reports — approved and rejected.
+- [Promo Codes](/promo-codes): Active discount codes and coupons for prop firms.
+- [Search](/search): Search articles, prop firm reviews and payout reports.
+- [Contact](/contact): Get in touch with the editorial team.
+
+## Optional
+
+- [Privacy Policy](/privacy): How we collect and protect personal data.
+- [Terms of Service](/terms): Terms governing use of the site.
+- [Disclaimer](/disclaimer): Risk and editorial disclaimer.

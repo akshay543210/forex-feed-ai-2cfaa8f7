@@ -33,9 +33,9 @@ export function BlogCard({ blog, size = "md" }: { blog: BlogCardData; size?: "sm
         )}
       </div>
       <div className={`flex flex-col gap-2 p-4 ${isLg ? "md:p-6" : ""}`}>
-        <h3 className={`font-display font-bold leading-tight group-hover:text-primary transition-colors ${isLg ? "text-2xl" : "text-base"}`}>
+        <h2 className={`font-display font-bold leading-tight group-hover:text-primary transition-colors ${isLg ? "text-2xl" : "text-base"}`}>
           {blog.title}
-        </h3>
+        </h2>
         {blog.excerpt && <p className="text-sm text-muted-foreground line-clamp-2">{blog.excerpt}</p>}
         <div className="flex items-center gap-3 text-xs text-muted-foreground mt-auto pt-2">
           {blog.author?.display_name && <span className="inline-flex items-center gap-1"><User className="h-3 w-3" />{blog.author.display_name}</span>}

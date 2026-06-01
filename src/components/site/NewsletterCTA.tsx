@@ -30,8 +30,9 @@ export function NewsletterCTA() {
       </div>
       <p className="text-sm text-muted-foreground mb-4">Top stories, payouts and promo codes — delivered each morning.</p>
       <form onSubmit={submit} className="flex flex-col sm:flex-row gap-2">
-        <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
-          placeholder="you@example.com"
+        <label htmlFor="newsletter-email" className="sr-only">Email address</label>
+        <input id="newsletter-email" type="email" required value={email} onChange={e => setEmail(e.target.value)}
+          placeholder="you@example.com" aria-label="Email address"
           className="flex-1 rounded-md bg-background/60 border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
         <button type="submit" disabled={state === "loading"}
           className="inline-flex items-center justify-center gap-2 rounded-md bg-gradient-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50">

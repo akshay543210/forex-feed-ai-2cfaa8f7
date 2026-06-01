@@ -2,6 +2,9 @@ type Meta = {
   title: string;
   description: string;
   image?: string;
+  /** Relative path like "/about" — used for canonical and og:url. */
+  path?: string;
+  /** Legacy absolute canonical (rarely used; prefer `path`). */
   canonical?: string;
   type?: "website" | "article";
   keywords?: string[];
@@ -11,20 +14,43 @@ type Meta = {
 };
 
 const SITE = "PropFirm Knowledge";
+const MAX_TITLE = 60;
+
+function clampTitle(raw: string): string {
+  const withSite = raw.includes(SITE) ? raw : `${raw} | ${SITE}`;
+  if (withSite.length <= MAX_TITLE) return withSite;
+  // If the bare title already fits, drop the site suffix.
+  if (raw.length <= MAX_TITLE) return raw;
+  // Otherwise truncate gracefully on word boundary.
+  const cut = raw.slice(0, MAX_TITLE - 1);
+  const lastSpace = cut.lastIndexOf(" ");
+  return (lastSpace > 30 ? cut.slice(0, lastSpace) : cut).trimEnd() + "…";
+}
+
+function clampDescription(raw: string): string {
+  const d = raw.trim();
+  if (d.length >= 50 && d.length <= 160) return d;
+  if (d.length > 160) return d.slice(0, 158).trimEnd() + "…";
+  // Too short — pad with site tagline so it lands in the 50–160 window.
+  const pad = " — PropFirm Knowledge: forex news, prop firm reviews, payouts and promo codes.";
+  return (d + pad).slice(0, 160);
+}
 
 export function buildHead(m: Meta) {
-  const title = m.title.includes(SITE) ? m.title : `${m.title} | ${SITE}`;
+  const title = clampTitle(m.title);
+  const description = clampDescription(m.description);
   const meta: Array<Record<string, string>> = [
     { title },
-    { name: "description", content: m.description.slice(0, 158) },
+    { name: "description", content: description },
     { property: "og:title", content: title },
-    { property: "og:description", content: m.description.slice(0, 158) },
+    { property: "og:description", content: description },
     { property: "og:type", content: m.type ?? "website" },
     { property: "og:site_name", content: SITE },
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: title },
-    { name: "twitter:description", content: m.description.slice(0, 158) },
+    { name: "twitter:description", content: description },
   ];
+  if (m.path) meta.push({ property: "og:url", content: m.path });
   if (m.keywords?.length) meta.push({ name: "keywords", content: m.keywords.join(", ") });
   if (m.image) {
     meta.push({ property: "og:image", content: m.image });
@@ -35,7 +61,8 @@ export function buildHead(m: Meta) {
   if (m.modifiedTime) meta.push({ property: "article:modified_time", content: m.modifiedTime });
 
   const links: Array<Record<string, string>> = [];
-  if (m.canonical) links.push({ rel: "canonical", href: m.canonical });
+  const canonical = m.canonical ?? m.path;
+  if (canonical) links.push({ rel: "canonical", href: canonical });
   return { meta, links };
 }
 
@@ -87,7 +114,7 @@ export function organizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: SITE,
-    url: "https://propfirm-knowledge.lovable.app",
+    url: "https://propfirmknowledge.in",
     description: "All-in-one media platform for the forex and prop firm industry.",
   };
 }

@@ -7,7 +7,7 @@ import { buildHead } from "@/lib/seo";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/search")({
-  head: () => buildHead({ title: "Search — PropFirm Knowledge", description: "Search forex news, prop firm reviews, payouts and education." }),
+  head: () => buildHead({ title: "Search", description: "Search forex news, prop firm reviews, payouts and education across PropFirm Knowledge.", path: "/search" }),
   component: SearchPage,
 });
 
@@ -35,8 +35,10 @@ function SearchPage() {
         <h1 className="font-display text-4xl font-bold mb-6">Search</h1>
         <form onSubmit={run} className="flex gap-2">
           <div className="relative flex-1">
+            <label htmlFor="site-search" className="sr-only">Search articles</label>
             <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input value={q} onChange={e => setQ(e.target.value)} placeholder="Search articles..."
+            <input id="site-search" type="search" value={q} onChange={e => setQ(e.target.value)} placeholder="Search articles..."
+              aria-label="Search articles"
               className="w-full pl-9 pr-3 py-2.5 rounded-md bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary" />
           </div>
           <button className="rounded-md bg-gradient-primary px-4 py-2.5 text-sm font-medium text-primary-foreground">Search</button>
