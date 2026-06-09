@@ -86,10 +86,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/jTRbQWys4nWmuQwEnqxDH1fIWVo2/social-images/social-1778222014523-20260117_155732.webp" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/jpeg", href: "/__l5e/assets-v1/" },
     ],
   }),
   shellComponent: RootShell,
