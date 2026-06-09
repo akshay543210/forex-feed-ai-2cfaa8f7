@@ -1,11 +1,15 @@
 import { Link } from "@tanstack/react-router";
+import logoAsset from "@/assets/propfirm-knowledge-logo.jpg.asset.json";
 
 export function Footer() {
   return (
     <footer className="mt-20 border-t border-border bg-card/50">
       <div className="mx-auto max-w-7xl px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
         <div>
-          <h4 className="font-display font-bold text-foreground mb-3">PropFirm Knowledge</h4>
+          <div className="flex items-center gap-2 mb-3">
+            <img src={logoAsset.url} alt="PropFirm Knowledge" className="h-10 w-10 rounded-lg object-cover" />
+            <h4 className="font-display font-bold text-foreground">PropFirm Knowledge</h4>
+          </div>
           <p className="text-muted-foreground">All-in-one media platform for the forex and prop firm industry.</p>
         </div>
         <div>
