@@ -55,12 +55,6 @@ function AdminPage() {
     } finally { setGenerating(false); }
   };
 
-  const runCron = async () => {
-    setMsg("Running auto-batch...");
-    const res = await fetch("/api/public/cron/auto-blog", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
-    const j = await res.json();
-    setMsg(res.ok ? `Auto batch: ${j.created ?? 0} drafts created` : (j.error || "Failed"));
-  };
 
   const backfillImages = async () => {
     setMsg("Generating cover images for existing blogs...");
