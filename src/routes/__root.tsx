@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import logoAsset from "@/assets/propfirm-knowledge-logo.jpg.asset.json";
 
 function NotFoundComponent() {
   return (
@@ -82,14 +83,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "propfirmknowledge" },
       { name: "twitter:description", content: "PropFirm Insights is an AI-powered platform for automated forex and prop firm news, reviews, and education." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/jTRbQWys4nWmuQwEnqxDH1fIWVo2/social-images/social-1778222014523-20260117_155732.webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/jTRbQWys4nWmuQwEnqxDH1fIWVo2/social-images/social-1778222014523-20260117_155732.webp" },
+      { property: "og:image", content: logoAsset.url },
+      { name: "twitter:image", content: logoAsset.url },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/jpeg", href: logoAsset.url },
+      { rel: "apple-touch-icon", href: logoAsset.url },
     ],
   }),
   shellComponent: RootShell,
