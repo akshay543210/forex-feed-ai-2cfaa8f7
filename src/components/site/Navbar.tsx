@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, Search, TrendingUp } from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
+import logoAsset from "@/assets/propfirm-knowledge-logo.jpg.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
