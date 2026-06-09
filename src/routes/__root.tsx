@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import logoAsset from "@/assets/propfirm-knowledge-logo.jpg.asset.json";
 
 function NotFoundComponent() {
   return (
