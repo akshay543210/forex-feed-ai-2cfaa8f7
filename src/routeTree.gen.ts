@@ -33,7 +33,6 @@ import { Route as AdminEditorRouteImport } from './routes/admin.editor'
 import { Route as AdminBlogsRouteImport } from './routes/admin.blogs'
 import { Route as ApiAiGenerateCoverRouteImport } from './routes/api/ai/generate-cover'
 import { Route as ApiAiGenerateBlogRouteImport } from './routes/api/ai/generate-blog'
-import { Route as ApiPublicCronAutoBlogRouteImport } from './routes/api/public/cron/auto-blog'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -155,11 +154,6 @@ const ApiAiGenerateBlogRoute = ApiAiGenerateBlogRouteImport.update({
   path: '/api/ai/generate-blog',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicCronAutoBlogRoute = ApiPublicCronAutoBlogRouteImport.update({
-  id: '/api/public/cron/auto-blog',
-  path: '/api/public/cron/auto-blog',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -186,7 +180,6 @@ export interface FileRoutesByFullPath {
   '/prop-firms/': typeof PropFirmsIndexRoute
   '/api/ai/generate-blog': typeof ApiAiGenerateBlogRoute
   '/api/ai/generate-cover': typeof ApiAiGenerateCoverRoute
-  '/api/public/cron/auto-blog': typeof ApiPublicCronAutoBlogRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -213,7 +206,6 @@ export interface FileRoutesByTo {
   '/prop-firms': typeof PropFirmsIndexRoute
   '/api/ai/generate-blog': typeof ApiAiGenerateBlogRoute
   '/api/ai/generate-cover': typeof ApiAiGenerateCoverRoute
-  '/api/public/cron/auto-blog': typeof ApiPublicCronAutoBlogRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -241,7 +233,6 @@ export interface FileRoutesById {
   '/prop-firms/': typeof PropFirmsIndexRoute
   '/api/ai/generate-blog': typeof ApiAiGenerateBlogRoute
   '/api/ai/generate-cover': typeof ApiAiGenerateCoverRoute
-  '/api/public/cron/auto-blog': typeof ApiPublicCronAutoBlogRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -270,7 +261,6 @@ export interface FileRouteTypes {
     | '/prop-firms/'
     | '/api/ai/generate-blog'
     | '/api/ai/generate-cover'
-    | '/api/public/cron/auto-blog'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -297,7 +287,6 @@ export interface FileRouteTypes {
     | '/prop-firms'
     | '/api/ai/generate-blog'
     | '/api/ai/generate-cover'
-    | '/api/public/cron/auto-blog'
   id:
     | '__root__'
     | '/'
@@ -324,7 +313,6 @@ export interface FileRouteTypes {
     | '/prop-firms/'
     | '/api/ai/generate-blog'
     | '/api/ai/generate-cover'
-    | '/api/public/cron/auto-blog'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -352,7 +340,6 @@ export interface RootRouteChildren {
   PropFirmsIndexRoute: typeof PropFirmsIndexRoute
   ApiAiGenerateBlogRoute: typeof ApiAiGenerateBlogRoute
   ApiAiGenerateCoverRoute: typeof ApiAiGenerateCoverRoute
-  ApiPublicCronAutoBlogRoute: typeof ApiPublicCronAutoBlogRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -525,13 +512,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAiGenerateBlogRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/cron/auto-blog': {
-      id: '/api/public/cron/auto-blog'
-      path: '/api/public/cron/auto-blog'
-      fullPath: '/api/public/cron/auto-blog'
-      preLoaderRoute: typeof ApiPublicCronAutoBlogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -560,7 +540,6 @@ const rootRouteChildren: RootRouteChildren = {
   PropFirmsIndexRoute: PropFirmsIndexRoute,
   ApiAiGenerateBlogRoute: ApiAiGenerateBlogRoute,
   ApiAiGenerateCoverRoute: ApiAiGenerateCoverRoute,
-  ApiPublicCronAutoBlogRoute: ApiPublicCronAutoBlogRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

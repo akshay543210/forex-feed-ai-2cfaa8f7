@@ -55,12 +55,6 @@ function AdminPage() {
     } finally { setGenerating(false); }
   };
 
-  const runCron = async () => {
-    setMsg("Running auto-batch...");
-    const res = await fetch("/api/public/cron/auto-blog", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
-    const j = await res.json();
-    setMsg(res.ok ? `Auto batch: ${j.created ?? 0} drafts created` : (j.error || "Failed"));
-  };
 
   const backfillImages = async () => {
     setMsg("Generating cover images for existing blogs...");
@@ -112,7 +106,7 @@ function AdminPage() {
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
             <Link to="/admin/editor" className="rounded-md bg-gradient-primary text-primary-foreground px-3 py-1.5 text-xs font-medium">✍️ Write new article</Link>
-            <button onClick={runCron} className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Run auto-batch now</button>
+            
             <button onClick={backfillImages} className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Backfill cover images</button>
             <Link to="/admin/blogs" className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Manage blogs</Link>
             <Link to="/admin/manage" className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">Manage everything</Link>
