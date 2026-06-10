@@ -4,6 +4,7 @@ import { Loader2, Save, Eye, Upload, Image as ImageIcon, Sparkles } from "lucide
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { slugify, readingTime } from "@/lib/format";
+import { RichEditor } from "@/components/editor/RichEditor";
 
 type Category = { id: string; name: string; slug: string };
 type FAQItem = { question: string; answer: string };
