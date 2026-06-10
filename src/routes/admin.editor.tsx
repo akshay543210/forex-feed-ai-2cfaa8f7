@@ -186,9 +186,7 @@ function EditorPage() {
             </div>
 
             {tab === "write" ? (
-              <textarea value={content} onChange={e => setContent(e.target.value)}
-                placeholder={`# Hook paragraph here\n\n## Section heading\nShort paragraph in 2-4 sentences.\n\n- bullet point\n- another bullet\n\n**Bold for key numbers.**\n\n> Expert quote or callout.\n\n## Key Takeaways\n- Takeaway 1\n- Takeaway 2\n\n## Bottom Line\nClosing 2-3 sentences.`}
-                rows={28} className="w-full bg-background border border-border rounded-md px-4 py-3 font-mono text-sm leading-relaxed" />
+              <RichEditor value={content} onChange={setContent} userId={userId} placeholder="Start writing your article…" />
             ) : (
               <div className="prose prose-invert prose-lg max-w-none rounded-md border border-border bg-background/50 p-6 min-h-[600px]">
                 <div dangerouslySetInnerHTML={{ __html: previewMd(content) }} />
