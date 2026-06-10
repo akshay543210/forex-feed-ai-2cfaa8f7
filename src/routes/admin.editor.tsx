@@ -4,6 +4,7 @@ import { Loader2, Save, Eye, Upload, Image as ImageIcon, Sparkles } from "lucide
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { slugify, readingTime } from "@/lib/format";
+import { RichEditor } from "@/components/editor/RichEditor";
 
 type Category = { id: string; name: string; slug: string };
 type FAQItem = { question: string; answer: string };
@@ -181,13 +182,11 @@ function EditorPage() {
             <div className="flex items-center gap-2 border-b border-border">
               <button onClick={() => setTab("write")} className={`px-3 py-2 text-sm border-b-2 ${tab==="write"?"border-primary text-primary":"border-transparent text-muted-foreground"}`}>Write</button>
               <button onClick={() => setTab("preview")} className={`px-3 py-2 text-sm border-b-2 inline-flex items-center gap-1 ${tab==="preview"?"border-primary text-primary":"border-transparent text-muted-foreground"}`}><Eye className="h-3.5 w-3.5" /> Preview</button>
-              <span className="ml-auto text-xs text-muted-foreground pr-1">Markdown · ## heading · **bold** · - bullet · &gt; quote</span>
+              <span className="ml-auto text-xs text-muted-foreground pr-1">Rich editor · HTML output · SEO-friendly</span>
             </div>
 
             {tab === "write" ? (
-              <textarea value={content} onChange={e => setContent(e.target.value)}
-                placeholder={`# Hook paragraph here\n\n## Section heading\nShort paragraph in 2-4 sentences.\n\n- bullet point\n- another bullet\n\n**Bold for key numbers.**\n\n> Expert quote or callout.\n\n## Key Takeaways\n- Takeaway 1\n- Takeaway 2\n\n## Bottom Line\nClosing 2-3 sentences.`}
-                rows={28} className="w-full bg-background border border-border rounded-md px-4 py-3 font-mono text-sm leading-relaxed" />
+              <RichEditor value={content} onChange={setContent} userId={userId} placeholder="Start writing your article…" />
             ) : (
               <div className="prose prose-invert prose-lg max-w-none rounded-md border border-border bg-background/50 p-6 min-h-[600px]">
                 <div dangerouslySetInnerHTML={{ __html: previewMd(content) }} />
