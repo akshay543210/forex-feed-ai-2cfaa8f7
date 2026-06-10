@@ -182,7 +182,7 @@ function EditorPage() {
             <div className="flex items-center gap-2 border-b border-border">
               <button onClick={() => setTab("write")} className={`px-3 py-2 text-sm border-b-2 ${tab==="write"?"border-primary text-primary":"border-transparent text-muted-foreground"}`}>Write</button>
               <button onClick={() => setTab("preview")} className={`px-3 py-2 text-sm border-b-2 inline-flex items-center gap-1 ${tab==="preview"?"border-primary text-primary":"border-transparent text-muted-foreground"}`}><Eye className="h-3.5 w-3.5" /> Preview</button>
-              <span className="ml-auto text-xs text-muted-foreground pr-1">Markdown · ## heading · **bold** · - bullet · &gt; quote</span>
+              <span className="ml-auto text-xs text-muted-foreground pr-1">Rich editor · HTML output · SEO-friendly</span>
             </div>
 
             {tab === "write" ? (
