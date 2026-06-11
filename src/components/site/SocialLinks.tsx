@@ -1,11 +1,13 @@
 import { Youtube, Send } from "lucide-react";
 
-export const SOCIAL_LINKS = [
+type Social = { name: string; href: string; icon: (p: { className?: string }) => JSX.Element; primary?: boolean };
+
+export const SOCIAL_LINKS: Social[] = [
   { name: "Discord", href: "https://discord.com/invite/7MRsuqqT3n", icon: DiscordIcon, primary: true },
   { name: "X (Twitter)", href: "https://x.com/propfirm_forex", icon: XIcon },
   { name: "Telegram", href: "https://telegram.dog/free_propfirm_accounts", icon: Send },
   { name: "YouTube", href: "https://www.youtube.com/@propfirm_knowledge", icon: Youtube },
-] as const;
+];
 
 export function SocialLinks({ size = "md" }: { size?: "sm" | "md" }) {
   const sz = size === "sm" ? "h-8 w-8" : "h-9 w-9";
