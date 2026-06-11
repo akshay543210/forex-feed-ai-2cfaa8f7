@@ -43,6 +43,11 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <div className="hidden xl:flex mr-1"><SocialLinks size="sm" /></div>
+          <a href="https://shop.propfirmknowledge.in/" target="_blank" rel="noopener noreferrer"
+            className="hidden md:inline-flex items-center gap-1.5 rounded-md bg-gradient-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground hover:opacity-90 shadow-glow">
+            <ShoppingBag className="h-3.5 w-3.5" /> Store
+          </a>
           <Link to="/search" className="hidden md:inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-muted">
             <Search className="h-4 w-4" />
           </Link>
