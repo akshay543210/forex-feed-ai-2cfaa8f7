@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X, Search, ShoppingBag } from "lucide-react";
 import logoAsset from "@/assets/propfirm-knowledge-logo.jpg.asset.json";
+import { SocialLinks } from "./SocialLinks";
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
@@ -42,6 +43,11 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <div className="hidden xl:flex mr-1"><SocialLinks size="sm" /></div>
+          <a href="https://shop.propfirmknowledge.in/" target="_blank" rel="noopener noreferrer"
+            className="hidden md:inline-flex items-center gap-1.5 rounded-md bg-gradient-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground hover:opacity-90 shadow-glow">
+            <ShoppingBag className="h-3.5 w-3.5" /> Store
+          </a>
           <Link to="/search" className="hidden md:inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-muted">
             <Search className="h-4 w-4" />
           </Link>
@@ -68,7 +74,11 @@ export function Navbar() {
               </Link>
             ))}
             <Link to="/search" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm hover:bg-muted">Search</Link>
-            {!user && <Link to="/auth" onClick={() => setOpen(false)} className="mt-2 rounded-md bg-gradient-primary px-3 py-2 text-sm font-medium text-primary-foreground text-center">Sign in</Link>}
+            <a href="https://shop.propfirmknowledge.in/" target="_blank" rel="noopener noreferrer" className="mt-2 rounded-md bg-gradient-primary px-3 py-2 text-sm font-semibold text-primary-foreground text-center inline-flex items-center justify-center gap-1.5">
+              <ShoppingBag className="h-4 w-4" /> Visit Store · 30% OFF
+            </a>
+            {!user && <Link to="/auth" onClick={() => setOpen(false)} className="mt-1 rounded-md border border-border px-3 py-2 text-sm font-medium text-center">Sign in</Link>}
+            <div className="mt-3 flex justify-center"><SocialLinks size="sm" /></div>
           </div>
         </div>
       )}

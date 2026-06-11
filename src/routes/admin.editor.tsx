@@ -188,8 +188,19 @@ function EditorPage() {
             {tab === "write" ? (
               <RichEditor value={content} onChange={setContent} userId={userId} placeholder="Start writing your article…" />
             ) : (
-              <div className="prose prose-invert prose-lg max-w-none rounded-md border border-border bg-background/50 p-6 min-h-[600px]">
-                <div dangerouslySetInnerHTML={{ __html: previewMd(content) }} />
+              <div className="rounded-md border border-border bg-background/50 p-6 min-h-[600px]">
+                <article
+                  className="prose prose-invert prose-lg max-w-none
+                    [&_h1]:font-display [&_h1]:font-bold [&_h1]:text-4xl
+                    [&_h2]:font-display [&_h2]:font-bold [&_h2]:text-3xl [&_h2]:border-b [&_h2]:border-border [&_h2]:pb-1
+                    [&_h3]:font-display [&_h3]:font-bold [&_h3]:text-xl
+                    [&_h4]:font-display [&_h4]:font-semibold [&_h4]:text-lg
+                    [&_a]:text-primary [&_a]:underline
+                    [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:bg-muted/40 [&_blockquote]:px-4 [&_blockquote]:py-2 [&_blockquote]:rounded-r-md
+                    [&_img]:rounded-xl [&_figcaption]:text-center [&_figcaption]:text-sm [&_figcaption]:text-muted-foreground
+                    [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6"
+                  dangerouslySetInnerHTML={{ __html: content || "<p class='text-muted-foreground'>Nothing to preview yet…</p>" }}
+                />
               </div>
             )}
 
