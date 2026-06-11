@@ -1,6 +1,7 @@
 import { Youtube, Send } from "lucide-react";
+import type { ComponentType, SVGProps } from "react";
 
-type Social = { name: string; href: string; icon: (p: { className?: string }) => JSX.Element; primary?: boolean };
+type Social = { name: string; href: string; icon: ComponentType<{ className?: string } & SVGProps<SVGSVGElement>>; primary?: boolean };
 
 export const SOCIAL_LINKS: Social[] = [
   { name: "Discord", href: "https://discord.com/invite/7MRsuqqT3n", icon: DiscordIcon, primary: true },
