@@ -1,5 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import logoAsset from "@/assets/propfirm-knowledge-logo.jpg.asset.json";
+import { SocialLinks } from "./SocialLinks";
+import { ShoppingBag } from "lucide-react";
 
 export function Footer() {
   return (
@@ -10,7 +12,12 @@ export function Footer() {
             <img src={logoAsset.url} alt="PropFirm Knowledge" className="h-10 w-10 rounded-lg object-cover" />
             <h4 className="font-display font-bold text-foreground">PropFirm Knowledge</h4>
           </div>
-          <p className="text-muted-foreground">All-in-one media platform for the forex and prop firm industry.</p>
+          <p className="text-muted-foreground mb-4">All-in-one media platform for the forex and prop firm industry.</p>
+          <SocialLinks size="sm" />
+          <a href="https://shop.propfirmknowledge.in/" target="_blank" rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-2 rounded-md bg-gradient-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 shadow-glow">
+            <ShoppingBag className="h-3.5 w-3.5" /> Visit Store · 30% OFF
+          </a>
         </div>
         <div>
           <h5 className="font-medium mb-3">Content</h5>
