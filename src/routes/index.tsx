@@ -51,7 +51,7 @@ function HomePage() {
       <section className="mx-auto max-w-7xl px-4 pt-8 pb-12">
         <div className="flex items-center gap-2 mb-4">
           <Sparkles className="h-4 w-4 text-primary" />
-          <span className="text-xs uppercase tracking-wider text-muted-foreground">AI-curated · Updated 24/7</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground">REALTIME · UPDATED 24/7</span>
         </div>
         <h1 className="font-display text-4xl md:text-6xl font-bold leading-tight max-w-4xl">
           The <span className="text-gradient">all-in-one</span> media platform for forex & prop firms.
