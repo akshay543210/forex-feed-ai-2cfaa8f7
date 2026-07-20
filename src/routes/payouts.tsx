@@ -70,6 +70,31 @@ function PayoutsPage() {
 
         {showForm && user && <SubmitPayoutForm userId={user} onDone={() => { setShowForm(false); setFilter(f => f); }} />}
 
+        {blogs.length > 0 && (
+          <section className="mt-8">
+            <div className="flex items-baseline justify-between">
+              <h2 className="font-display text-2xl font-bold">Payout Stories & Guides</h2>
+              <a href="/category/payout-updates" className="text-xs text-primary hover:underline">View all →</a>
+            </div>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              {blogs.map(b => (
+                <a key={b.id} href={`/blog/${b.slug}`} className="group rounded-xl glass overflow-hidden hover:border-primary/50 transition">
+                  {b.cover_image_url && (
+                    <div className="aspect-[16/9] overflow-hidden bg-muted">
+                      <img src={b.cover_image_url} alt={b.title} loading="lazy" className="h-full w-full object-cover group-hover:scale-105 transition-transform" />
+                    </div>
+                  )}
+                  <div className="p-4">
+                    <h3 className="font-display text-base font-semibold leading-snug line-clamp-2 group-hover:text-primary">{b.title}</h3>
+                    {b.excerpt && <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{b.excerpt}</p>}
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+
         <div className="mt-6 flex gap-2">
           {(["all","approved","rejected"] as const).map(f => (
             <button key={f} onClick={() => setFilter(f)}
