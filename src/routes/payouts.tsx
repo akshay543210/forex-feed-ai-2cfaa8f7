@@ -27,13 +27,23 @@ type PayoutBlog = {
 
 function PayoutsPage() {
   const [items, setItems] = useState<Payout[]>([]);
+  const [blogs, setBlogs] = useState<PayoutBlog[]>([]);
   const [filter, setFilter] = useState<"all"|"approved"|"rejected">("all");
   const [user, setUser] = useState<string|null>(null);
   const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user?.id ?? null));
+    supabase.from("categories").select("id").eq("slug", "payout-updates").maybeSingle().then(({ data: cat }) => {
+      if (!cat) return;
+      supabase.from("blogs")
+        .select("id,slug,title,excerpt,cover_image_url,published_at")
+        .eq("status", "published").eq("category_id", cat.id)
+        .order("published_at", { ascending: false }).limit(6)
+        .then(({ data }) => setBlogs((data as PayoutBlog[]) ?? []));
+    });
   }, []);
+
   useEffect(() => {
     let q = supabase.from("payout_submissions")
       .select("id,amount_usd,status,created_at,notes,prop_firms(name,slug)")
