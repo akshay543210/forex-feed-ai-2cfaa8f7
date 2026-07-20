@@ -20,6 +20,11 @@ type Payout = {
   prop_firms: { name: string; slug: string } | null;
 };
 
+type PayoutBlog = {
+  id: string; slug: string; title: string; excerpt: string | null; cover_image_url: string | null; published_at: string | null;
+};
+
+
 function PayoutsPage() {
   const [items, setItems] = useState<Payout[]>([]);
   const [filter, setFilter] = useState<"all"|"approved"|"rejected">("all");
