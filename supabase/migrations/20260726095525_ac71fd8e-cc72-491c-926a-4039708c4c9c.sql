@@ -1,0 +1,1 @@
+UPDATE public.blogs SET content = regexp_replace(content, '^!\[25K Next Level Funded Trading Journal\]\([^)]+\)\n\n', '') WHERE slug = '25k-next-level-funded-trading-journal-first-payout';
