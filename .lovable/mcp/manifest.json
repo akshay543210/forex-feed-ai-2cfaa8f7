@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "sdk_version": "0.24.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://jnewfdxfqutiofwgkved.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "propfirm-knowledge-mcp",
+      "version": "0.1.0",
+      "title": "PropFirm Knowledge"
+    },
+    "tools": [
+      {
+        "name": "search_blogs",
+        "title": "Search articles",
+        "description": "Search PropFirm Knowledge articles by keyword. Returns title, slug, status, category and excerpt.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "Keyword to match against title, slug or excerpt."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "draft",
+                "scheduled",
+                "pending_approval",
+                "published",
+                "archived"
+              ],
+              "description": "Filter by publication status."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991,
+              "description": "Max results, default 10, max 50."
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_blog",
+        "title": "Get article",
+        "description": "Fetch one PropFirm Knowledge article by slug, including its full markdown content.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "slug": {
+              "type": "string",
+              "description": "Article slug, e.g. how-prop-firms-really-work."
+            }
+          },
+          "required": [
+            "slug"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_prop_firms",
+        "title": "List prop firms",
+        "description": "List prop trading firms tracked on PropFirm Knowledge with trust score, profit split, payout frequency and pricing.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "Filter firms by name."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991,
+              "description": "Max results, default 20, max 100."
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "create_blog_draft",
+        "title": "Create article draft",
+        "description": "Create a new PropFirm Knowledge article as a draft (never published directly). Content should be markdown with H2/H3 headings, short paragraphs and bullet points.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "Article title."
+            },
+            "content": {
+              "type": "string",
+              "description": "Full article body in markdown."
+            },
+            "slug": {
+              "type": "string",
+              "description": "URL slug; generated from the title when omitted."
+            },
+            "excerpt": {
+              "type": "string",
+              "description": "Short summary shown on cards and in search."
+            },
+            "seo_title": {
+              "type": "string",
+              "description": "SEO title, ideally under 60 characters."
+            },
+            "seo_description": {
+              "type": "string",
+              "description": "SEO meta description, ideally 50-160 characters."
+            },
+            "seo_keywords": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Target keywords."
+            },
+            "category_slug": {
+              "type": "string",
+              "description": "Category slug, e.g. prop-firm-reviews."
+            }
+          },
+          "required": [
+            "title",
+            "content"
+          ]
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
