@@ -16,6 +16,7 @@ import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as PromoCodesRouteImport } from './routes/promo-codes'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PayoutsRouteImport } from './routes/payouts'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -31,8 +32,12 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminManageRouteImport } from './routes/admin.manage'
 import { Route as AdminEditorRouteImport } from './routes/admin.editor'
 import { Route as AdminBlogsRouteImport } from './routes/admin.blogs'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as ApiAiGenerateCoverRouteImport } from './routes/api/ai/generate-cover'
 import { Route as ApiAiGenerateBlogRouteImport } from './routes/api/ai/generate-blog'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -67,6 +72,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const PayoutsRoute = PayoutsRouteImport.update({
   id: '/payouts',
   path: '/payouts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DisclaimerRoute = DisclaimerRouteImport.update({
@@ -144,6 +154,18 @@ const AdminBlogsRoute = AdminBlogsRouteImport.update({
   path: '/admin/blogs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiAiGenerateCoverRoute = ApiAiGenerateCoverRouteImport.update({
   id: '/api/ai/generate-cover',
   path: '/api/ai/generate-cover',
@@ -152,6 +174,17 @@ const ApiAiGenerateCoverRoute = ApiAiGenerateCoverRouteImport.update({
 const ApiAiGenerateBlogRoute = ApiAiGenerateBlogRouteImport.update({
   id: '/api/ai/generate-blog',
   path: '/api/ai/generate-blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Char91DotmcpChar93InvokeToolToolRoute =
+  Char91DotmcpChar93InvokeToolToolRouteImport.update({
+    id: '/.mcp/invoke-tool/$tool',
+    path: '/.mcp/invoke-tool/$tool',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -163,6 +196,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/disclaimer': typeof DisclaimerRoute
+  '/mcp': typeof McpRoute
   '/payouts': typeof PayoutsRoute
   '/privacy': typeof PrivacyRoute
   '/promo-codes': typeof PromoCodesRoute
@@ -170,6 +204,8 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin/blogs': typeof AdminBlogsRoute
   '/admin/editor': typeof AdminEditorRoute
   '/admin/manage': typeof AdminManageRoute
@@ -178,6 +214,8 @@ export interface FileRoutesByFullPath {
   '/prop-firms/$slug': typeof PropFirmsSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/prop-firms/': typeof PropFirmsIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/ai/generate-blog': typeof ApiAiGenerateBlogRoute
   '/api/ai/generate-cover': typeof ApiAiGenerateCoverRoute
 }
@@ -189,6 +227,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/disclaimer': typeof DisclaimerRoute
+  '/mcp': typeof McpRoute
   '/payouts': typeof PayoutsRoute
   '/privacy': typeof PrivacyRoute
   '/promo-codes': typeof PromoCodesRoute
@@ -196,6 +235,8 @@ export interface FileRoutesByTo {
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin/blogs': typeof AdminBlogsRoute
   '/admin/editor': typeof AdminEditorRoute
   '/admin/manage': typeof AdminManageRoute
@@ -204,6 +245,8 @@ export interface FileRoutesByTo {
   '/prop-firms/$slug': typeof PropFirmsSlugRoute
   '/admin': typeof AdminIndexRoute
   '/prop-firms': typeof PropFirmsIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/ai/generate-blog': typeof ApiAiGenerateBlogRoute
   '/api/ai/generate-cover': typeof ApiAiGenerateCoverRoute
 }
@@ -216,6 +259,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/disclaimer': typeof DisclaimerRoute
+  '/mcp': typeof McpRoute
   '/payouts': typeof PayoutsRoute
   '/privacy': typeof PrivacyRoute
   '/promo-codes': typeof PromoCodesRoute
@@ -223,6 +267,8 @@ export interface FileRoutesById {
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin/blogs': typeof AdminBlogsRoute
   '/admin/editor': typeof AdminEditorRoute
   '/admin/manage': typeof AdminManageRoute
@@ -231,6 +277,8 @@ export interface FileRoutesById {
   '/prop-firms/$slug': typeof PropFirmsSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/prop-firms/': typeof PropFirmsIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/ai/generate-blog': typeof ApiAiGenerateBlogRoute
   '/api/ai/generate-cover': typeof ApiAiGenerateCoverRoute
 }
@@ -244,6 +292,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/disclaimer'
+    | '/mcp'
     | '/payouts'
     | '/privacy'
     | '/promo-codes'
@@ -251,6 +300,8 @@ export interface FileRouteTypes {
     | '/search'
     | '/sitemap.xml'
     | '/terms'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/admin/blogs'
     | '/admin/editor'
     | '/admin/manage'
@@ -259,6 +310,8 @@ export interface FileRouteTypes {
     | '/prop-firms/$slug'
     | '/admin/'
     | '/prop-firms/'
+    | '/.lovable/oauth/consent'
+    | '/.mcp/invoke-tool/$tool'
     | '/api/ai/generate-blog'
     | '/api/ai/generate-cover'
   fileRoutesByTo: FileRoutesByTo
@@ -270,6 +323,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/disclaimer'
+    | '/mcp'
     | '/payouts'
     | '/privacy'
     | '/promo-codes'
@@ -277,6 +331,8 @@ export interface FileRouteTypes {
     | '/search'
     | '/sitemap.xml'
     | '/terms'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/admin/blogs'
     | '/admin/editor'
     | '/admin/manage'
@@ -285,6 +341,8 @@ export interface FileRouteTypes {
     | '/prop-firms/$slug'
     | '/admin'
     | '/prop-firms'
+    | '/.lovable/oauth/consent'
+    | '/.mcp/invoke-tool/$tool'
     | '/api/ai/generate-blog'
     | '/api/ai/generate-cover'
   id:
@@ -296,6 +354,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/disclaimer'
+    | '/mcp'
     | '/payouts'
     | '/privacy'
     | '/promo-codes'
@@ -303,6 +362,8 @@ export interface FileRouteTypes {
     | '/search'
     | '/sitemap.xml'
     | '/terms'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/admin/blogs'
     | '/admin/editor'
     | '/admin/manage'
@@ -311,6 +372,8 @@ export interface FileRouteTypes {
     | '/prop-firms/$slug'
     | '/admin/'
     | '/prop-firms/'
+    | '/.lovable/oauth/consent'
+    | '/.mcp/invoke-tool/$tool'
     | '/api/ai/generate-blog'
     | '/api/ai/generate-cover'
   fileRoutesById: FileRoutesById
@@ -323,6 +386,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
   DisclaimerRoute: typeof DisclaimerRoute
+  McpRoute: typeof McpRoute
   PayoutsRoute: typeof PayoutsRoute
   PrivacyRoute: typeof PrivacyRoute
   PromoCodesRoute: typeof PromoCodesRoute
@@ -330,6 +394,8 @@ export interface RootRouteChildren {
   SearchRoute: typeof SearchRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
+  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   AdminBlogsRoute: typeof AdminBlogsRoute
   AdminEditorRoute: typeof AdminEditorRoute
   AdminManageRoute: typeof AdminManageRoute
@@ -338,6 +404,8 @@ export interface RootRouteChildren {
   PropFirmsSlugRoute: typeof PropFirmsSlugRoute
   AdminIndexRoute: typeof AdminIndexRoute
   PropFirmsIndexRoute: typeof PropFirmsIndexRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
+  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   ApiAiGenerateBlogRoute: typeof ApiAiGenerateBlogRoute
   ApiAiGenerateCoverRoute: typeof ApiAiGenerateCoverRoute
 }
@@ -391,6 +459,13 @@ declare module '@tanstack/react-router' {
       path: '/payouts'
       fullPath: '/payouts'
       preLoaderRoute: typeof PayoutsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/disclaimer': {
@@ -498,6 +573,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBlogsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/ai/generate-cover': {
       id: '/api/ai/generate-cover'
       path: '/api/ai/generate-cover'
@@ -512,6 +601,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAiGenerateBlogRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -523,6 +626,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
   DisclaimerRoute: DisclaimerRoute,
+  McpRoute: McpRoute,
   PayoutsRoute: PayoutsRoute,
   PrivacyRoute: PrivacyRoute,
   PromoCodesRoute: PromoCodesRoute,
@@ -530,6 +634,9 @@ const rootRouteChildren: RootRouteChildren = {
   SearchRoute: SearchRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
+  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   AdminBlogsRoute: AdminBlogsRoute,
   AdminEditorRoute: AdminEditorRoute,
   AdminManageRoute: AdminManageRoute,
@@ -538,6 +645,8 @@ const rootRouteChildren: RootRouteChildren = {
   PropFirmsSlugRoute: PropFirmsSlugRoute,
   AdminIndexRoute: AdminIndexRoute,
   PropFirmsIndexRoute: PropFirmsIndexRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
+  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   ApiAiGenerateBlogRoute: ApiAiGenerateBlogRoute,
   ApiAiGenerateCoverRoute: ApiAiGenerateCoverRoute,
 }
