@@ -4,19 +4,29 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { buildHead } from "@/lib/seo";
 import { supabase } from "@/integrations/supabase/client";
 
+function safeNext(next: string | undefined) {
+  return next && next.startsWith("/") && !next.startsWith("//") ? next : null;
+}
+
 export const Route = createFileRoute("/auth")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    next: typeof s.next === "string" ? s.next : undefined,
+  }),
   head: () => buildHead({ title: "Sign in", description: "Sign in or create a PropFirm Knowledge account to comment on reviews, submit payouts and save articles.", path: "/auth" }),
   component: AuthPage,
 });
 
 function AuthPage() {
   const nav = useNavigate();
+  const { next } = Route.useSearch();
+  const target = safeNext(next);
+  const go = () => { if (target) window.location.href = target; else nav({ to: "/account" }); };
   const [mode, setMode] = useState<"signin"|"signup">("signin");
   const [email, setEmail] = useState(""); const [password, setPassword] = useState(""); const [name, setName] = useState("");
   const [err, setErr] = useState(""); const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => { if (data.session) nav({ to: "/account" }); });
+    supabase.auth.getSession().then(({ data }) => { if (data.session) go(); });
   }, [nav]);
 
   const submit = async (e: React.FormEvent) => {
@@ -24,18 +34,18 @@ function AuthPage() {
     if (mode === "signup") {
       const { error } = await supabase.auth.signUp({
         email, password,
-        options: { emailRedirectTo: window.location.origin, data: { display_name: name } },
+        options: { emailRedirectTo: window.location.origin + (target ?? ""), data: { display_name: name } },
       });
-      if (error) setErr(error.message); else nav({ to: "/account" });
+      if (error) setErr(error.message); else go();
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) setErr(error.message); else nav({ to: "/account" });
+      if (error) setErr(error.message); else go();
     }
     setLoading(false);
   };
 
   const google = async () => {
-    await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: window.location.origin + "/account" } });
+    await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: window.location.origin + (target ?? "/account") } });
   };
 
   return (
