@@ -9,9 +9,8 @@ function safeNext(next: string | undefined) {
 }
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>) => ({
-    next: typeof s.next === "string" ? s.next : undefined,
-  }),
+  validateSearch: (s: Record<string, unknown>): { next?: string } =>
+    typeof s.next === "string" ? { next: s.next } : {},
   head: () => buildHead({ title: "Sign in", description: "Sign in or create a PropFirm Knowledge account to comment on reviews, submit payouts and save articles.", path: "/auth" }),
   component: AuthPage,
 });
