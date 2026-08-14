@@ -80,19 +80,19 @@ function FirmPage() {
 
         {(firm.pros?.length || firm.cons?.length) && (
           <section className="mt-8 grid md:grid-cols-2 gap-4">
-            {firm.pros?.length > 0 && (
+            {(firm.pros?.length ?? 0) > 0 && (
               <div className="rounded-xl glass p-5">
                 <h2 className="font-display font-bold mb-3 text-success">Pros</h2>
                 <ul className="space-y-2 text-sm">
-                  {firm.pros.map((p: string, i: number) => <li key={i} className="flex gap-2"><Check className="h-4 w-4 text-success shrink-0 mt-0.5" />{p}</li>)}
+                  {firm.pros!.map((p: string, i: number) => <li key={i} className="flex gap-2"><Check className="h-4 w-4 text-success shrink-0 mt-0.5" />{p}</li>)}
                 </ul>
               </div>
             )}
-            {firm.cons?.length > 0 && (
+            {(firm.cons?.length ?? 0) > 0 && (
               <div className="rounded-xl glass p-5">
                 <h2 className="font-display font-bold mb-3 text-destructive">Cons</h2>
                 <ul className="space-y-2 text-sm">
-                  {firm.cons.map((p: string, i: number) => <li key={i} className="flex gap-2"><X className="h-4 w-4 text-destructive shrink-0 mt-0.5" />{p}</li>)}
+                  {firm.cons!.map((p: string, i: number) => <li key={i} className="flex gap-2"><X className="h-4 w-4 text-destructive shrink-0 mt-0.5" />{p}</li>)}
                 </ul>
               </div>
             )}
