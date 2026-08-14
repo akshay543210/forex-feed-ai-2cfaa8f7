@@ -44,7 +44,7 @@ function AdminBlogs() {
         <div className="flex items-center justify-between flex-wrap gap-3">
           <h1 className="font-display text-3xl font-bold">Blogs</h1>
           <div className="flex gap-2 items-center">
-            <Link to="/admin/editor" className="rounded-md bg-gradient-primary text-primary-foreground px-3 py-1.5 text-xs font-medium">+ New article</Link>
+            <Link to="/admin/editor" search={{ id: undefined }} className="rounded-md bg-gradient-primary text-primary-foreground px-3 py-1.5 text-xs font-medium">+ New article</Link>
             <Link to="/admin" className="text-xs text-primary">← Back</Link>
           </div>
         </div>

@@ -22,18 +22,18 @@ export function Footer() {
         <div>
           <h5 className="font-medium mb-3">Content</h5>
           <ul className="space-y-2 text-muted-foreground">
-            <li><Link to="/category/forex-news" className="hover:text-foreground">Forex News</Link></li>
-            <li><Link to="/category/prop-firm-reviews" className="hover:text-foreground">Reviews</Link></li>
-            <li><Link to="/category/payout-updates" className="hover:text-foreground">Payouts</Link></li>
-            <li><Link to="/category/promo-codes" className="hover:text-foreground">Promo Codes</Link></li>
+            <li><Link to="/category/$slug" params={{ slug: "forex-news" }} className="hover:text-foreground">Forex News</Link></li>
+            <li><Link to="/category/$slug" params={{ slug: "prop-firm-reviews" }} className="hover:text-foreground">Reviews</Link></li>
+            <li><Link to="/category/$slug" params={{ slug: "payout-updates" }} className="hover:text-foreground">Payouts</Link></li>
+            <li><Link to="/category/$slug" params={{ slug: "promo-codes" }} className="hover:text-foreground">Promo Codes</Link></li>
           </ul>
         </div>
         <div>
           <h5 className="font-medium mb-3">Resources</h5>
           <ul className="space-y-2 text-muted-foreground">
             <li><Link to="/prop-firms" className="hover:text-foreground">Prop Firm Directory</Link></li>
-            <li><Link to="/category/trading-education" className="hover:text-foreground">Education</Link></li>
-            <li><Link to="/category/scam-alerts" className="hover:text-foreground">Scam Alerts</Link></li>
+            <li><Link to="/category/$slug" params={{ slug: "trading-education" }} className="hover:text-foreground">Education</Link></li>
+            <li><Link to="/category/$slug" params={{ slug: "scam-alerts" }} className="hover:text-foreground">Scam Alerts</Link></li>
             <li><a href="/sitemap.xml" className="hover:text-foreground">Sitemap</a></li>
           </ul>
         </div>

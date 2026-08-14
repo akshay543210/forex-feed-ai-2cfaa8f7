@@ -1,0 +1,1 @@
+UPDATE public.blogs SET cover_image_url = 'https://jnewfdxfqutiofwgkved.supabase.co/storage/v1/object/public/media/blogs%2Fmffu-club%2Fmffu-thumbnail.png' WHERE slug = 'mffu-club-points-25k-account-for-1-dollar';
