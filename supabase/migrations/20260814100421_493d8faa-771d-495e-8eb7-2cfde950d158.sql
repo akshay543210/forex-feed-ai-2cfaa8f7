@@ -1,0 +1,1 @@
+UPDATE public.blogs SET content = replace(content, 'https://myfundedfutures.com/', 'https://mffu.com/f/82dc376c8e') WHERE slug = 'mffu-club-points-25k-account-for-1-dollar';
